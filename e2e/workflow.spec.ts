@@ -63,6 +63,9 @@ test("بيع آجل 3 × 100 = 345 ثم تحصيل 100 نقدًا و245 بنك �
   await summary.locator('[data-act="posConfirm"]').dblclick();
   await expect(page).toHaveURL(/#\/sales\/sale-/);
   await expect(page.getByText("تم تسجيل البيع بنجاح")).toBeVisible();
+  // الحفظ في المتصفح مؤجل 250 ملي ثانية: ننتظر ظهور البيع في التخزين
+  await expect.poll(async () => (await appState(page)).sales?.length ?? 0).toBeGreaterThan(0);
+  await page.waitForTimeout(400);
   const state1 = await appState(page);
   const frameId = state1.products.find((p: { testTag?: string }) => p.testTag === "TEST_FRAME").id;
   expect(state1.sales.filter((s: { lines: { pid: string }[] }) => s.lines.some((l) => l.pid === frameId))).toHaveLength(1);

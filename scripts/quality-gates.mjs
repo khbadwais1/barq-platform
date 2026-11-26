@@ -137,10 +137,13 @@ gate("G10", "API Contract", existsSync("src/app/api") ? "NOT TESTED" : "N/A", ex
 {
   if (!existsSync("e2e")) gate("G11", "E2E", "NOT TESTED", "لا توجد اختبارات متصفح آلية");
   else {
-    const r = sh("npx playwright test --reporter=line");
-    const passed = r.out.match(/(d+) passed/)?.[1];
-    const failed = r.out.match(/(d+) failed/)?.[1];
-    gate("G11", "E2E", r.code === 0 ? "PASS" : "FAIL", r.code === 0 ? `Playwright: ${passed} passed (دخول كل دور، 403، بيع 345 وتحصيل من نافذة أخرى، PDF، القبول، الجوال 390)` : `Playwright: ${failed || "?"} failed — ${tail(r.out, 4)}`);
+    const r0 = sh("npx playwright test --reporter=line");
+    // إزالة رموز الألوان من مخرجات الطرفية قبل قراءة الأعداد
+    const ESC = String.fromCharCode(27);
+    const r = { ...r0, out: r0.out.split(ESC).map((p, k) => (k ? p.replace(/^\[[0-9;]*m/, "") : p)).join("") };
+    const passed = r.out.match(/(\d+) passed/)?.[1];
+    const failed = r.out.match(/(\d+) failed/)?.[1];
+    gate("G11", "E2E", r.code === 0 ? "PASS" : "FAIL", r.code === 0 ? `Playwright: ${passed ?? "?"} passed (دخول كل دور، 403، بيع 345 وتحصيل من نافذة أخرى، PDF، القبول، الجوال 390)` : `Playwright: ${failed || "?"} failed — ${tail(r.out, 4)}`);
   }
 }
 // G12 AI Eval

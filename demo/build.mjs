@@ -8,6 +8,14 @@ const files = ["data", "logic", "seed", "ui", "app", "pages-core", "pages-sales"
 const js = files.map((f) => `/* ── ${f}.js ── */\n` + readFileSync(`src/${f}.js`, "utf8")).join("\n");
 // الخط مضمّن داخل الملف حتى يظهر بشكل صحيح بدون إنترنت
 const fontCss = readFileSync("fonts/plex-subset.css", "utf8").replace(/url\((https:[^)]+\/([^/)]+\.woff2))\)/g, (_, u, f) => `url(data:font/woff2;base64,${readFileSync("fonts/" + f).toString("base64")})`);
+// آخر تقرير لبوابات الجودة (3 TECH) يُضمَّن في صفحة سيناريوهات القبول
+let gates = [];
+let gatesMeta = {};
+try {
+  const md = readFileSync("../reports/gates-latest.md", "utf8");
+  gates = [...md.matchAll(/^\| (G\d+) \| ([^|]+) \| ([^|]+) \| (.*) \|$/gm)].map((m) => ({ id: m[1], name: m[2].trim(), status: m[3].trim(), evidence: m[4].replace(/<br>/g, " ").replace(/(undefined|NaN)/g, "؟").slice(0, 220) }));
+  gatesMeta = { date: md.match(/التاريخ: (\S+)/)?.[1] || "", commit: md.match(/الإصدار: (\S+)/)?.[1] || "", tier: md.match(/مستوى الإلزام: \*\*(\w+)/)?.[1] || "T3" };
+} catch {}
 const css = fontCss + readFileSync("src/styles.css", "utf8");
 const html = `<!doctype html>
 <html lang="ar" dir="rtl">
@@ -30,6 +38,7 @@ const html = `<!doctype html>
 <script>${qr.outputFiles[0].text}</script>
 <script>${pdf.outputFiles[0].text}</script>
 <script>
+const QUALITY = ${JSON.stringify({ gates, meta: gatesMeta })};
 ${js}
 /* ── التشغيل ── */
 load();

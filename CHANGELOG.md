@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 2026-11-26 — اختبارات المتصفح (G11)
+- 7 اختبارات Playwright في متصفح حقيقي، تعمل في `npm run gates` وفي GitHub Actions.
+- **إصلاح خلل وجدته الاختبارات:** زر «دخول» بعد كتابة اسم المستخدم وكلمة المرور كان لا يعمل (نموذج الدخول يبتلع النقرة)؛ كانت أزرار حسابات العرض فقط تعمل.
+- إغلاق الاستثناء EX-002.
+
+## 2026-11-26 — CR-001 تحديث المكتبات (معتمد من خالد)
+- الثغرات المعروفة 12 → 0: jspdf 4.2.1، vitest 5.1.2، zod 4.6.7، @types/node 24، Prisma 7.10.1، Next.js 16.4.6، React 19.3، `effect` 3.22.5 (override).
+- Prisma 7: عنوان القاعدة انتقل إلى `prisma.config.ts`، والاتصال عبر `@prisma/adapter-pg`. لا تغيير على النماذج أو الترحيلات.
+- ESLint بصيغة الإعداد الجديدة لـ Next.js 16.
+- اعتماد المخطط والخطة من خالد (G13).
+
 ## 2026-11-26 — المواءمة مع معايير 3 TECH v1.4
 - إضافة ملفات المعايير: AGENTS, ARCHITECTURE (خط أساس), PLAN, REQUIREMENTS, BUSINESS_RULES (24 قاعدة), EXCEPTIONS, SECURITY, TESTING, DEPLOYMENT, SLO.
 - بوابات الجودة `npm run gates` لمستوى T3 مع تقرير `reports/gates-latest.md`، وفحص آلي في GitHub Actions.

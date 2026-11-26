@@ -40,6 +40,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx prisma generate
+      - run: npx playwright install --with-deps chromium
       - name: Quality gates
         run: npm run gates
       - name: Gates report
@@ -49,4 +50,7 @@ jobs:
         if: always()
         with:
           name: gates-report
-          path: reports/gates-latest.md
+          path: |
+            reports/gates-latest.md
+            reports/e2e
+            test-results

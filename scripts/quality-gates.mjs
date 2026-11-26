@@ -117,7 +117,8 @@ function waivers() {
   const v = sh("npx prisma validate");
   const base = process.env.GATES_DB_ADMIN_URL || "postgresql://barq:barq_dev_password@localhost:5433/postgres";
   const name = "barq_gate_" + Date.now();
-  const exec = (sql) => sh(`npx prisma db execute --stdin --url "${base}"`, { input: sql });
+  // Prisma 7: عنوان القاعدة من البيئة عبر prisma.config.ts (لا يوجد خيار --url)
+  const exec = (sql) => sh("npx prisma db execute --stdin", { input: sql, env: { ...process.env, DATABASE_URL: base } });
   const edited = sh("git diff --name-only HEAD -- prisma/migrations").out.trim();
   const created = v.code === 0 ? exec(`CREATE DATABASE ${name};`) : { code: 1, out: "" };
   if (v.code !== 0) gate("G09", "Migration Check", "FAIL", tail(v.out));
@@ -132,8 +133,19 @@ function waivers() {
 }
 // G10 API Contract
 gate("G10", "API Contract", existsSync("src/app/api") ? "NOT TESTED" : "N/A", existsSync("src/app/api") ? "لا يوجد اختبار عقد بعد" : "لا توجد واجهات API منشورة بعد");
-// G11 E2E
-gate("G11", "E2E", existsSync("e2e") ? "NOT TESTED" : "NOT TESTED", "لا توجد اختبارات متصفح آلية (Playwright) بعد — مطلوبة في T3");
+// G11 E2E — Playwright في متصفح Chromium حقيقي
+{
+  if (!existsSync("e2e")) gate("G11", "E2E", "NOT TESTED", "لا توجد اختبارات متصفح آلية");
+  else {
+    const r0 = sh("npx playwright test --reporter=line");
+    // إزالة رموز الألوان من مخرجات الطرفية قبل قراءة الأعداد
+    const ESC = String.fromCharCode(27);
+    const r = { ...r0, out: r0.out.split(ESC).map((p, k) => (k ? p.replace(/^\[[0-9;]*m/, "") : p)).join("") };
+    const passed = r.out.match(/(\d+) passed/)?.[1];
+    const failed = r.out.match(/(\d+) failed/)?.[1];
+    gate("G11", "E2E", r.code === 0 ? "PASS" : "FAIL", r.code === 0 ? `Playwright: ${passed ?? "?"} passed (دخول كل دور، 403، بيع 345 وتحصيل من نافذة أخرى، PDF، القبول، الجوال 390)` : `Playwright: ${failed || "?"} failed — ${tail(r.out, 4)}`);
+  }
+}
 // G12 AI Eval
 gate("G12", "AI Eval", "N/A", "لا توجد ميزات ذكاء اصطناعي في النظام");
 // G13 Architecture Plan

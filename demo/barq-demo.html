@@ -3457,7 +3457,7 @@ function loginPage() {
       <div class="row wrap" style="gap:10px;margin-top:22px">${["عهدة كل مشروع بالقطعة", "فاتورة ضريبية 15%", "سند قبض باسم المندوب", "يومية الصندوق تلقائيًا"].map((t) => `<span class="chip" style="background:rgba(255,255,255,.1);color:#e0e7ff">${ic("check")}${t}</span>`).join("")}</div></div>
       <div class="small" style="color:#8ea0dd;position:relative">${COMPANY.address}</div>
     </div>
-    <div class="login-form"><form class="login-box" data-act="noop" onsubmit="event.preventDefault();ACTIONS.login()">
+    <div class="login-form"><form class="login-box" onsubmit="event.preventDefault();ACTIONS.login()">
       <div class="login-brand-m"><div class="logo">B</div><div><b>سقالات البرق</b><div class="xs muted">${COMPANY.tagline}</div></div></div><h1 style="font-size:24px;margin:0 0 4px">تسجيل الدخول</h1><div class="muted" style="margin-bottom:22px">أدخل اسم المستخدم وكلمة المرور</div>
       ${expired ? `<div class="alert warn" style="margin-bottom:12px">${ic("clock")}<div>انتهت الجلسة بسبب عدم النشاط. سجّل الدخول مرة أخرى.</div></div>` : ""}
       ${err ? `<div class="alert danger" style="margin-bottom:12px">${ic("alert")}<div>${esc(err)}</div></div>` : ""}

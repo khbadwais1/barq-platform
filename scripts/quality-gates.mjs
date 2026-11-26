@@ -133,8 +133,16 @@ function waivers() {
 }
 // G10 API Contract
 gate("G10", "API Contract", existsSync("src/app/api") ? "NOT TESTED" : "N/A", existsSync("src/app/api") ? "لا يوجد اختبار عقد بعد" : "لا توجد واجهات API منشورة بعد");
-// G11 E2E
-gate("G11", "E2E", existsSync("e2e") ? "NOT TESTED" : "NOT TESTED", "لا توجد اختبارات متصفح آلية (Playwright) بعد — مطلوبة في T3");
+// G11 E2E — Playwright في متصفح Chromium حقيقي
+{
+  if (!existsSync("e2e")) gate("G11", "E2E", "NOT TESTED", "لا توجد اختبارات متصفح آلية");
+  else {
+    const r = sh("npx playwright test --reporter=line");
+    const passed = r.out.match(/(d+) passed/)?.[1];
+    const failed = r.out.match(/(d+) failed/)?.[1];
+    gate("G11", "E2E", r.code === 0 ? "PASS" : "FAIL", r.code === 0 ? `Playwright: ${passed} passed (دخول كل دور، 403، بيع 345 وتحصيل من نافذة أخرى، PDF، القبول، الجوال 390)` : `Playwright: ${failed || "?"} failed — ${tail(r.out, 4)}`);
+  }
+}
 // G12 AI Eval
 gate("G12", "AI Eval", "N/A", "لا توجد ميزات ذكاء اصطناعي في النظام");
 // G13 Architecture Plan

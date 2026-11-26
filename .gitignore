@@ -45,3 +45,6 @@ next-env.d.ts
 !.env.example
 /.pgdata
 .claude/
+/test-results
+/reports/e2e
+/playwright-report

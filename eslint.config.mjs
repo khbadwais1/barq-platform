@@ -1,6 +1,7 @@
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { FlatCompat } from "@eslint/eslintrc";
+import security from "eslint-plugin-security";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -11,6 +12,7 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  { plugins: { security } },
   {
     ignores: [
       "node_modules/**",
@@ -18,6 +20,9 @@ const eslintConfig = [
       "out/**",
       "build/**",
       "next-env.d.ts",
+      // نسخة العرض ملف مستقل بلغة JavaScript وتُفحص ببوابة خاصة (node --check + اختباراتها) — انظر TESTING.md
+      "demo/**",
+      ".pgdata/**",
     ],
   },
 ];

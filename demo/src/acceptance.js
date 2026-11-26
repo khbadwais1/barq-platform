@@ -32,6 +32,7 @@ function runAcceptance() {
     const bal0 = customerSummary(cust.id).balance;
 
     /* ١. بيع آجل 3 × 100 */
+    // قواعد الأعمال: BR-001 BR-005
     const G1 = "١. بيع آجل وتحصيل على دفعتين (الرقم المرجعي 345)";
     check(G1, "الرصيد الابتدائي للإطار 20", bal(frame.id, "w1").AVAILABLE === 20, `المتاح ${bal(frame.id, "w1").AVAILABLE}`);
     const r1 = createSale({ customerId: cust.id, projectId: pA.id, wh: "w1", lines: [{ pid: frame.id, count: 3, price: 10000 }], docDisc: 0, term: "CREDIT", idemKey: "acc-sale-1" }, s1);
@@ -53,6 +54,7 @@ function runAcceptance() {
     check(G1, "اسم المندوب محفوظ في السند وقت الإصدار", p1.repName === "المندوب 3");
 
     /* ٢. خصم 20 */
+    // قواعد الأعمال: BR-001 BR-006
     const G2 = "٢. الخصم والموافقة";
     const t = saleTotals([{ pid: frame.id, count: 3, price: 10000 }], 2000, 15);
     check(G2, "خصم 20: الوعاء 280 والضريبة 42 والإجمالي 322", t.taxable === 28000 && t.vat === 4200 && t.total === 32200, `${t.taxable / 100} / ${t.vat / 100} / ${t.total / 100}`);
@@ -66,6 +68,7 @@ function runAcceptance() {
     check(G2, "إعادة الاعتماد مرة ثانية مرفوضة", !!expectErr(() => decideApproval(ap.id, "APPROVED", "", owner)));
 
     /* ٣. الحماية */
+    // قواعد الأعمال: BR-002 BR-003 BR-004 BR-008 BR-021
     const G3 = "٣. الحماية: النقص، التكرار، التزامن، الصلاحيات";
     check(G3, "بيع كمية أكبر من المتاح مرفوض", !!expectErr(() => createSale({ customerId: cust.id, projectId: pA.id, wh: "w1", lines: [{ pid: frame.id, count: 50, price: 10000 }], term: "CREDIT", idemKey: "acc-x1" }, s1)));
     const nSales = S.sales.length;
@@ -85,6 +88,7 @@ function runAcceptance() {
     check(G3, "صنف متاحه 5 في أ و10 في ب: بيع 8 من أ مرفوض مع اقتراح ب", !!e8 && e8.includes("مستودع ب"), e8 || "");
 
     /* ٤. السعر */
+    // قواعد الأعمال: BR-007
     const G4 = "٤. تغيير السعر لا يمس المستندات السابقة";
     frame.price = 11000;
     check(G4, "الفاتورة الأولى بقيت على 100", r1.invoice.items[0].price === 10000);
@@ -92,6 +96,7 @@ function runAcceptance() {
     frame.price = 10000;
 
     /* ٥. الإيجار 138 */
+    // قواعد الأعمال: BR-003 BR-010 BR-011 BR-012
     const G5 = "٥. عقد إيجار 4 × 10 × 3 أيام (الرقم المرجعي 138)";
     const day0 = dayNo(Date.now()) - 3;
     const rr = createRental({ customerId: cust.id, projectId: pB.id, wh: "w1", basis: "DAILY", periods: 3, mode: "FIXED", lines: [{ pid: mach.id, qty: 4, rate: 1000 }], at: dayStart(day0) + 9 * 3600000, start: dayStart(day0), idemKey: "acc-rent" }, s1);
@@ -115,6 +120,7 @@ function runAcceptance() {
     check(G5, "لا قيمة إضافية لأن الرد تم خلال المدة", rentalUnbilled(rr.rental).gross === 0);
 
     /* ٦. مشروعان */
+    // قواعد الأعمال: BR-011
     const G6 = "٦. مشروعان لنفس العميل ونفس الصنف دون اختلاط";
     const q3 = S.products.find((p) => p.family === "قائم" && p.len === 3);
     const cA = custodyRows(cust.id, pA.id).filter((r) => r.pid === q3.id).reduce((a, r) => a + r.onSite, 0);
@@ -131,6 +137,7 @@ function runAcceptance() {
     check(G6, "مستندات عميل لا تظهر في ملف عميل آخر", customerDocuments(S.customers[1].id).every((d) => byId(S.sales, d.id)?.customerId !== cust.id && byId(S.payments, d.id)?.customerId !== cust.id));
 
     /* ٧. البحث */
+    // قواعد الأعمال: BR-020
     const G7 = "٧. البحث بالمفاتيح الخمسة";
     const comp = S.customers.find((c) => c.type === "COMPANY" && c.cr);
     const ind = S.customers.find((c) => c.nationalId);
@@ -145,6 +152,7 @@ function runAcceptance() {
     check(G7, "لا تُملأ حقول غير منطبقة (منشأة بلا هوية، فرد بلا سجل)", !comp.nationalId && !comp.iqama && !ind.cr);
 
     /* ٨. المصروف */
+    // قواعد الأعمال: BR-040
     const G8 = "٨. المصروفات وحد الاعتماد 5,000";
     const c0 = accountBalance("a-cash");
     const e1 = createExpense({ cat: "إعاشة وطعام", amount: 499999, accountId: "a-cash", idemKey: "acc-e1" }, fin).expense;
@@ -162,6 +170,7 @@ function runAcceptance() {
     check(G8, "رفض مصروف يترك الحساب دون خصم ويحفظ السبب", accountBalance("a-cash") === c1 - 750000 && e2.reason === "غير ضروري" && e2.reviewedBy === owner.id);
 
     /* ٩. سند لأمر */
+    // قواعد الأعمال: BR-022
     const G9 = "٩. سند لأمر";
     const cc = accountBalance("a-cash");
     S.promissory.push({ id: "pn-acc", no: "PN-TEST", customerId: cust.id, projectId: pA.id, amount: 100000, at: Date.now(), due: null, status: "ACTIVE", by: fin.id });
@@ -170,6 +179,7 @@ function runAcceptance() {
     check(G9, "يظهر في بروفايل المشروع الصحيح فقط", customerDocuments(cust.id, pA.id).some((d) => d.id === "pn-acc") && !customerDocuments(cust.id, pB.id).some((d) => d.id === "pn-acc"));
 
     /* ١١. مطابقة كشف «محمد» من ملفات المؤسسة */
+    // قواعد الأعمال: BR-015
     const G11 = "١١. فاتورة إيجارات الفترة بطريقة المؤسسة (كشف محمد)";
     const moh = S.customers.find((c) => c.name === "محمد");
     const rMoh = S.rentals.find((r) => r.customerId === moh.id);
@@ -188,6 +198,7 @@ function runAcceptance() {
     check(G11, "إصدار الفاتورة ثم إعادة الحساب لنفس الفترة ⇐ لا شيء غير مفوتر", bills[0].taxable === 1690250 && rentalPeriodRows(moh.id, null, t0, t0 + 118).length === 0);
 
     /* ١٢. الإلغاء والإغلاق وحماية الصندوق */
+    // قواعد الأعمال: BR-013 BR-041 BR-042 BR-043
     const G12 = "١٢. إلغاء البيع، إغلاق العقد وإلغاؤه، وحماية الصندوق";
     const fr2 = S.products.find((p) => p.testTag === "TEST_FRAME");
     const av0 = bal(fr2.id, "w1").AVAILABLE;
@@ -206,9 +217,11 @@ function runAcceptance() {
     check(G12, "إغلاق العقد يفوتر الأيام ويفك حجز ما لم يُسلَّم (2 قطعة)", closed.rental.status === "CLOSED" && bal(mach.id, "w1").RESERVED === 0 && bal(mach.id, "w1").AVAILABLE === 10 && !!closed.bill);
     check(G12, "لا تسليم على عقد مغلق", !!expectErr(() => deliverRental(pr2.rental.id, { lines: [{ idx: 0, qty: 1 }], idemKey: "acc-x-dl" }, yard)));
     const big = createExpense({ cat: "مصروف صيانة", amount: accountBalance("a-cash") + 100, accountId: "a-cash", idemKey: "acc-big" }, fin).expense;
+    check(G12, "الكفيل الغارم: الهوية بلا اسم مرفوضة، والصيغ العربية و+966 تُوحَّد، والهوية القصيرة مرفوضة", !!expectErr(() => updateGuarantor(cust.id, { guarantorId: "1023456789" }, s1)) && updateGuarantor(cust.id, { guarantor: "كفيل", guarantorId: "١٠٢٣٤٥٦٧٨٩", guarantorMobile: "+966 55 123 4567" }, s1).guarantorMobile === "0551234567" && !!expectErr(() => updateGuarantor(cust.id, { guarantor: "كفيل", guarantorId: "12345" }, s1)));
     check(G12, "الصندوق لا يصرف أكثر من رصيده (يُرفض الاعتماد)", big.status === "PENDING" && !!expectErr(() => decideApproval(S.approvals.find((x) => x.entityId === big.id).id, "APPROVED", "", owner)) && accountBalance("a-cash") >= 0);
 
     /* ١٠. المطابقة */
+    // قواعد الأعمال: BR-005
     const G10 = "١٠. المطابقة بين الدفاتر";
     let okInv = true;
     for (const i of S.invoices) if (i.status !== "CANCELLED" && i.total !== invPaid(i) + invRemaining(i)) okInv = false;

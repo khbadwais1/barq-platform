@@ -1,4 +1,4 @@
-// زاحف: يفتح كل صفحة لكل دور، ويتبع كل رابط وكل data-go، ويتحقق أن كل data-act له معالج
+// BR-008 (الصلاحيات ونطاق كل دور) — زاحف: يفتح كل صفحة لكل دور، ويتبع كل رابط وكل data-go، ويتحقق أن كل data-act له معالج
 const fs = require("fs");
 const vm = require("vm");
 const html = fs.readFileSync(__dirname + "/../barq-demo.html", "utf8");
@@ -82,3 +82,5 @@ console.log("pages rendered:", pages);
 console.log("actions referenced:", actsSeen.size, "missing handlers:", missing.join(", ") || "none");
 console.log("problems:", problems.length);
 [...new Set(problems)].slice(0, 60).forEach((p) => console.log("  " + p));
+
+if (problems.length || missing.length) process.exitCode = 1;

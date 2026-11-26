@@ -50,3 +50,5 @@ for (const u of S.users) {
   }
 }
 console.log(`renders ${renders}, errors ${errs}`);
+
+if (failed.length || errs) process.exitCode = 1;

@@ -35,6 +35,7 @@ const stats = {},
   fails = [];
 const isDomain = (e) => e instanceof X.DomainError || e.constructor.name === "DomainError";
 
+// ثوابت قواعد الأعمال: BR-002 BR-003 BR-004 BR-005 BR-011 BR-012 BR-013 BR-014 BR-041
 function invariants(step, label) {
   const errs = [];
   const B = X.balances();
@@ -177,3 +178,5 @@ console.log("guards rejected:", JSON.stringify(rejected));
 console.log("invariant failures:", fails.length);
 fails.slice(0, 10).forEach((f) => console.log("  " + f));
 console.log("modal problems:", modalErrs.length ? modalErrs.join(" | ") : "none");
+
+if (fails.length || modalErrs.length) process.exitCode = 1;

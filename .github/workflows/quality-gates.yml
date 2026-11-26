@@ -1,0 +1,52 @@
+# بوابات الجودة 3 TECH (T3) — تعمل عند كل دفع وطلب دمج، وتمنع الدمج إذا فشلت بوابة مطلوبة
+name: quality-gates
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  gates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: barq
+          POSTGRES_PASSWORD: barq_ci_password
+          POSTGRES_DB: barq
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U barq"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://barq:barq_ci_password@localhost:5432/barq?schema=public
+      GATES_DB_ADMIN_URL: postgresql://barq:barq_ci_password@localhost:5432/postgres
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx prisma generate
+      - name: Quality gates
+        run: npm run gates
+      - name: Gates report
+        if: always()
+        run: cat reports/gates-latest.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: gates-report
+          path: reports/gates-latest.md

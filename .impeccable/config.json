@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "arial",
+        "files": [
+          "demo/src/styles.css"
+        ],
+        "createdAt": "2026-11-25T07:48:49.962Z",
+        "reason": "Claude: 9px ALBARQ caption under the logo in print templates replicates the lettering on the company's scanned paper forms (docs/forms)"
+      }
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+# Local development database only. Production uses deploy/docker-compose.prod.yml
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: barq-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: barq
+      POSTGRES_PASSWORD: barq_dev_password
+      POSTGRES_DB: barq
+    ports:
+      - "5433:5432"
+    volumes:
+      - barq_pgdata:/var/lib/postgresql/data
+      - ./deploy/initdb:/docker-entrypoint-initdb.d:ro
+
+volumes:
+  barq_pgdata:

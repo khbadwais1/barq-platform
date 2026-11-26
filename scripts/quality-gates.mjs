@@ -117,7 +117,8 @@ function waivers() {
   const v = sh("npx prisma validate");
   const base = process.env.GATES_DB_ADMIN_URL || "postgresql://barq:barq_dev_password@localhost:5433/postgres";
   const name = "barq_gate_" + Date.now();
-  const exec = (sql) => sh(`npx prisma db execute --stdin --url "${base}"`, { input: sql });
+  // Prisma 7: عنوان القاعدة من البيئة عبر prisma.config.ts (لا يوجد خيار --url)
+  const exec = (sql) => sh("npx prisma db execute --stdin", { input: sql, env: { ...process.env, DATABASE_URL: base } });
   const edited = sh("git diff --name-only HEAD -- prisma/migrations").out.trim();
   const created = v.code === 0 ? exec(`CREATE DATABASE ${name};`) : { code: 1, out: "" };
   if (v.code !== 0) gate("G09", "Migration Check", "FAIL", tail(v.out));

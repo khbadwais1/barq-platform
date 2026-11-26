@@ -30,11 +30,11 @@
     "decimal.js": "^10.6.0",
     "framer-motion": "^12.43.0",
     "lucide-react": "^1.80.0",
-    "next": "15.5.29",
+    "next": "^16.4.6",
     "pg": "^8.23.1",
     "qrcode": "^1.5.4",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
     "recharts": "^2.15.4",
     "server-only": "^0.0.1",
     "sonner": "^2.0.8",
@@ -52,7 +52,7 @@
     "dotenv": "^18.0.10",
     "embedded-postgres": "^17.5.0-beta.15",
     "eslint": "^9",
-    "eslint-config-next": "15.5.29",
+    "eslint-config-next": "^16.4.6",
     "eslint-plugin-security": "^3.0.1",
     "html-to-image": "^1.11.11",
     "jspdf": "^4.2.1",
@@ -68,5 +68,8 @@
     "esbuild@0.28.2": true,
     "prisma@6.19.3": true,
     "@embedded-postgres/windows-x64@17.5.0-beta.15": true
+  },
+  "overrides": {
+    "effect": "3.22.5"
   }
 }

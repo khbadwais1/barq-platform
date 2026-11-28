@@ -514,6 +514,73 @@ td.num,th.num{display:table-cell}
   @page{size:A4;margin:10mm}
 }
 .pdf-mode .tbl-wrap{max-height:none!important;overflow:visible!important}
+
+/* ═══ CR-004: الأدوات ═══ */
+.tools-panel{position:fixed;top:0;left:0;bottom:0;width:380px;max-width:100vw;background:var(--surface);border-right:1px solid var(--border);box-shadow:var(--shadow-lg);z-index:60;display:flex;flex-direction:column;animation:toolsIn var(--dur) var(--ease)}
+@keyframes toolsIn{from{transform:translateX(-24px);opacity:0}to{transform:none;opacity:1}}
+.tools-h{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--border)}
+.tools-h b{display:flex;align-items:center;gap:8px}
+.tools-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:8px;border-bottom:1px solid var(--border)}
+.tools-tabs button{display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 4px;border:1px solid transparent;border-radius:9px;background:none;cursor:pointer;font-size:11px;color:var(--text-2)}
+.tools-tabs button.on{background:var(--brand-soft);color:var(--brand);border-color:#c7d2fe;font-weight:600}
+.tools-b{padding:14px;overflow:auto;flex:1}
+.calc-in{height:48px;font-size:20px;text-align:left}
+.calc-out{font-size:26px;font-weight:700;text-align:left;margin:8px 2px;min-height:34px;color:var(--brand)}
+.calc-keys{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.calc-keys .btn{height:44px;font-size:17px}
+.quote{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-top:10px;display:flex;flex-direction:column;gap:4px}
+.quote .big{font-size:16px;border-top:1px solid var(--border);padding-top:6px;margin-top:2px}
+.notes-ta{min-height:320px;line-height:1.8}
+.todo{display:flex;gap:8px;align-items:flex-start;padding:8px 0;border-bottom:1px dashed var(--border)}
+.todo input{margin-top:4px}
+.todo.done .small{text-decoration:line-through;color:var(--text-3)}
+.todo .late{color:var(--red);font-weight:600}.todo .today{color:var(--amber);font-weight:600}
+.btn.wa{background:#e8f8ee;border-color:#b7e4c7;color:#166534}
+.btn.wa:hover{background:#d5f2df}
+.btn.icon-only{width:26px;height:26px;padding:0}
+.btn.icon-only svg{width:14px;height:14px}
+.star{border:0;background:none;cursor:pointer;color:var(--text-3);padding:0 2px;vertical-align:middle;display:inline-grid;place-items:center}
+.star svg{width:22px;height:22px}
+.star.sm svg{width:17px;height:17px}
+.star.on{color:#f59e0b}
+.star.on svg{fill:#f59e0b}
+.page-head h1 .star{margin-inline-end:6px}
+.hclock{display:flex;flex-direction:column;align-items:flex-end;line-height:1.25;padding:0 6px}
+.hclock b{font-size:14px}
+.hclock span{font-size:11px;color:var(--text-3)}
+.proj-note{margin-top:6px;background:var(--amber-soft);color:#92400e;border-radius:7px;padding:4px 7px}
+.proj-note svg{width:11px;height:11px;vertical-align:-1px}
+.alert.pinned{align-items:center}
+kbd{display:inline-block;min-width:28px;text-align:center;border:1px solid var(--border-strong);border-bottom-width:2px;border-radius:6px;padding:1px 7px;font-family:ui-monospace,Consolas,monospace;font-size:12px;background:var(--surface-2)}
+@media (max-width:980px){.hclock{display:none}}
+@media (max-width:460px){.tools-panel{width:100vw}}
+
+/* ═══ الوضع الليلي (تفضيل الجهاز) — المطبوعات تبقى فاتحة ═══ */
+:root[data-theme="dark"]{
+  --bg:#0b1020;--surface:#121a2e;--surface-2:#18223a;--border:#26324d;--border-strong:#34415f;
+  --text:#e6eaf3;--text-2:#a9b4cc;--text-3:#7180a0;
+  --brand:#8aa4ff;--brand-2:#9fb4ff;--brand-soft:#1c2850;
+  --green:#4ade80;--green-soft:#0f2a1c;--amber:#fbbf24;--amber-soft:#2b2210;--red:#f87171;--red-soft:#2e1416;--blue:#93b4ff;--blue-soft:#15213f;--gray-soft:#1b2440;
+  --shadow:0 1px 2px rgba(0,0,0,.3);--shadow-lg:0 12px 40px rgba(0,0,0,.5);
+  color-scheme:dark;
+}
+:root[data-theme="dark"] body{background:var(--bg)}
+:root[data-theme="dark"] .header{background:rgba(18,26,46,.92)}
+:root[data-theme="dark"] .card,:root[data-theme="dark"] .modal,:root[data-theme="dark"] .modal-h,:root[data-theme="dark"] .dropdown,:root[data-theme="dark"] .search-results,:root[data-theme="dark"] .cols-menu,:root[data-theme="dark"] .fam,:root[data-theme="dark"] .size,:root[data-theme="dark"] .icon-btn,:root[data-theme="dark"] .user-chip,:root[data-theme="dark"] .btn,:root[data-theme="dark"] .input,:root[data-theme="dark"] .select,:root[data-theme="dark"] .cats button,:root[data-theme="dark"] .date-range,:root[data-theme="dark"] .mobile-bar,:root[data-theme="dark"] .login-form{background:var(--surface);color:var(--text);border-color:var(--border)}
+:root[data-theme="dark"] .btn.primary,:root[data-theme="dark"] .icon-btn.primary,:root[data-theme="dark"] .cats button.on{background:#3b5bdb;border-color:#3b5bdb;color:#fff}
+:root[data-theme="dark"] .btn.success{background:#15803d;border-color:#15803d;color:#fff}
+:root[data-theme="dark"] .btn.wa{background:#0f2a1c;border-color:#1f5134;color:#86efac}
+:root[data-theme="dark"] .seg button.on{background:var(--surface-2);color:var(--text)}
+:root[data-theme="dark"] .tbl th,:root[data-theme="dark"] .tbl tfoot td,:root[data-theme="dark"] .modal-f,:root[data-theme="dark"] .fam-h,:root[data-theme="dark"] .matrix th{background:var(--surface-2)}
+:root[data-theme="dark"] .tbl td{border-bottom-color:#1d2741}
+:root[data-theme="dark"] .tbl tbody tr:hover{background:#17213b}
+:root[data-theme="dark"] .demo-banner{background:#2b2210;color:#fcd34d;border-color:#4a3a14}
+:root[data-theme="dark"] .alert.warn{color:#fcd34d}:root[data-theme="dark"] .alert.danger{color:#fca5a5}:root[data-theme="dark"] .alert.info{color:#bfdbfe}:root[data-theme="dark"] .alert.ok{color:#86efac}
+:root[data-theme="dark"] .proj-note{color:#fcd34d}
+:root[data-theme="dark"] .login-form h1,:root[data-theme="dark"] .page-head h1{color:var(--text)}
+:root[data-theme="dark"] .print-wrap{background:#0b1020}
+:root[data-theme="dark"] .print-sheet{color:#1e3a8a;background:#fff}
+:root[data-theme="dark"] .chart .gl{stroke:#26324d}
 </style>
 </head>
 <body>
@@ -761,7 +828,7 @@ jspdf/dist/jspdf.es.min.js:
 */
 </script>
 <script>
-const QUALITY = {"gates":[{"id":"G01","name":"Build","status":"PASS","evidence":"next build exit 0"},{"id":"G02","name":"Lint","status":"PASS","evidence":"eslint exit 0 (src)؛ نسخة العرض: node --check"},{"id":"G03","name":"Secret Scan","status":"PASS","evidence":"86 ملفًا متتبعًا بلا أسرار"},{"id":"G04","name":"Dependency Scan","status":"PASS","evidence":"critical 0, high 0, moderate 0, low 0"},{"id":"G05","name":"Type Check","status":"PASS","evidence":"tsc --noEmit exit 0"},{"id":"G06","name":"Tests","status":"PASS","evidence":"unit 14 passed; demo acceptance 78/78; crawl 674 pages; fuzz invariant failures 0"},{"id":"G07","name":"Business Rule Coverage","status":"PASS","evidence":"22 قاعدة، لكل منها اختبار"},{"id":"G08","name":"SAST","status":"PASS","evidence":"eslint-plugin-security: 0 errors, 4 warnings (مراجعة في SECURITY.md)"},{"id":"G09","name":"Migration Check","status":"PASS","evidence":"schema valid؛ كل الترحيلات طُبّقت على قاعدة جديدة فارغة ثم حُذفت"},{"id":"G10","name":"API Contract","status":"N/A","evidence":"لا توجد واجهات API منشورة بعد"},{"id":"G11","name":"E2E","status":"PASS","evidence":"Playwright: 7 passed (دخول كل دور، 403، بيع 345 وتحصيل من نافذة أخرى، PDF، القبول، الجوال 390)"},{"id":"G12","name":"AI Eval","status":"N/A","evidence":"لا توجد ميزات ذكاء اصطناعي في النظام"},{"id":"G13","name":"Architecture Plan","status":"PASS","evidence":"المخطط معتمد"}],"meta":{"date":"2026-11-26T13:30:55.161Z","commit":"4628e08","tier":"T3"}};
+const QUALITY = {"gates":[{"id":"G01","name":"Build","status":"PASS","evidence":"next build exit 0"},{"id":"G02","name":"Lint","status":"PASS","evidence":"eslint exit 0 (src)؛ نسخة العرض: node --check"},{"id":"G03","name":"Secret Scan","status":"PASS","evidence":"86 ملفًا متتبعًا بلا أسرار"},{"id":"G04","name":"Dependency Scan","status":"PASS","evidence":"critical 0, high 0, moderate 0, low 0"},{"id":"G05","name":"Type Check","status":"PASS","evidence":"tsc --noEmit exit 0"},{"id":"G06","name":"Tests","status":"PASS","evidence":"unit 14 passed; demo acceptance 86/86; crawl 709 pages; fuzz invariant failures 0"},{"id":"G07","name":"Business Rule Coverage","status":"PASS","evidence":"23 قاعدة، لكل منها اختبار"},{"id":"G08","name":"SAST","status":"PASS","evidence":"eslint-plugin-security: 0 errors, 4 warnings (مراجعة في SECURITY.md)"},{"id":"G09","name":"Migration Check","status":"PASS","evidence":"schema valid؛ كل الترحيلات طُبّقت على قاعدة جديدة فارغة ثم حُذفت"},{"id":"G10","name":"API Contract","status":"N/A","evidence":"لا توجد واجهات API منشورة بعد"},{"id":"G11","name":"E2E","status":"PASS","evidence":"Playwright: 10 passed (دخول كل دور، 403، بيع 345 وتحصيل من نافذة أخرى، PDF، القبول، الجوال 390)"},{"id":"G12","name":"AI Eval","status":"N/A","evidence":"لا توجد ميزات ذكاء اصطناعي في النظام"},{"id":"G13","name":"Architecture Plan","status":"PASS","evidence":"المخطط معتمد"}],"meta":{"date":"2026-11-28T17:13:53.079Z","commit":"0adf91e","tier":"T3"}};
 /* ── data.js ── */
 /* ═══════════ بيانات العرض — تُولَّد نسبة إلى تاريخ اليوم ═══════════
    كل المبالغ بالهللة (أعداد صحيحة) لتجنب أخطاء الكسور العشرية. */
@@ -2010,6 +2077,7 @@ function notificationsFor(user) {
       }
     if (user.role === "OWNER") for (const a of S.approvals.filter((a) => a.status === "PENDING")) out.push({ key: "ap-" + a.id, type: "blue", title: "طلب موافقة", body: a.summary, link: "#/approvals", at: a.at });
     if (user.role === "SELLER") for (const a of S.approvals.filter((a) => a.requestedBy === user.id && a.status !== "PENDING" && now - a.decidedAt < 7 * DAY)) out.push({ key: "apd-" + a.id, type: a.status === "APPROVED" ? "green" : "red", title: a.status === "APPROVED" ? "تم اعتماد طلبك" : "تم رفض طلبك", body: a.summary, link: "#/sales", at: a.decidedAt });
+    for (const r of (S.reminders || []).filter((r) => r.userId === user.id && !r.done && r.due && dayNo(r.due) <= dayNo(now))) out.push({ key: "rm-" + r.id, type: dayNo(r.due) < dayNo(now) ? "red" : "blue", title: "تذكير", body: r.text, link: r.customerId ? "#/customers/" + r.customerId : "#" + ROLE_HOME[user.role], at: r.due });
     for (const f of S.followups.filter((f) => f.userId === user.id && f.next && dayNo(f.next) <= dayNo(now) && !f.done)) out.push({ key: "fu-" + f.id, type: "blue", title: "متابعة مستحقة", body: `${byId(S.customers, f.customerId).name} — ${f.outcome}`, link: "#/customers/" + f.customerId, at: f.next });
     return out.sort((a, b) => b.at - a.at);
   });
@@ -2506,6 +2574,13 @@ const ICONS = {
   doc: '<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/>',
   repeat: '<path d="m17 2 4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>',
   cashOut: '<rect x="2" y="6" width="20" height="12" rx="2"/><path d="M12 9v6M9.5 11.5 12 9l2.5 2.5"/><path d="M6 12h.01M18 12h.01"/>',
+  tools: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.4 2.4-2.6-.6-.6-2.6z"/>',
+  calc: '<rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01M8 19h.01M12 19h4"/>',
+  copy: '<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
+  whatsapp: '<path d="M3 21l1.65-4.4A8.5 8.5 0 1 1 8 19.6z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 .8a4 4 0 0 1-1.8-1.8l.8-1-1-2z"/>',
+  moon: '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>',
+  keyboard: '<rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/>',
+  pin: '<path d="M12 17v5M5 17h14l-1.5-3.5V5h1V3H5.5v2h1v8.5z"/>',
   hash: '<path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/>',
 };
 const ic = (n, cls = "") => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICONS[n] || ""}</svg>`;
@@ -2735,6 +2810,8 @@ function table(id, columns, rows, opts = {}) {
       });
     }
   }
+  // صفوف مثبتة في الأعلى (مثل العملاء المفضلين) مهما كان الفرز
+  if (opts.pinFirst) data = [...data.filter(opts.pinFirst), ...data.filter((r) => !opts.pinFirst(r))];
   const pages = Math.max(1, Math.ceil(data.length / st.size));
   if (st.page >= pages) st.page = pages - 1;
   const slice = data.slice(st.page * st.size, st.page * st.size + st.size);
@@ -2989,6 +3066,7 @@ function go(path) {
 /* ─── العرض ─── */
 const $ = (sel, root = document) => root.querySelector(sel);
 function render() {
+  ensureToolsState();
   const { path, query } = parseHash();
   ME = currentUser();
   const root = $("#root");
@@ -3112,14 +3190,17 @@ function layout(content, path, enter) {
         <button class="icon-btn menu-btn" data-act="mnav">${ic("menu")}</button>
         <div class="search"><input id="gsearch" placeholder="ابحث: عميل، جوال، هوية، سجل، فاتورة، بيع، إيجار، مشروع، صنف…" value="${esc(UI.search)}" data-act-input="gsearch" autocomplete="off">${ic("search")}${UI.search.trim().length >= 2 ? globalResults(UI.search) : ""}</div>
         <span class="grow"></span>
+        ${headerClock()}
+        <button class="icon-btn" data-act="toggleTools" title="الأدوات (T)" aria-pressed="${UI.toolsOpen ? "true" : "false"}">${ic("tools")}</button>
         ${qa.length ? `<div style="position:relative"><button class="icon-btn primary" data-act="menu" data-m="qa" title="إجراء سريع">${ic("plus")}</button>${UI.menu === "qa" ? `<div class="dropdown">${qa.map(([h, i, l]) => `<button data-act="quick" data-h="${h}">${ic(i)}${l}</button>`).join("")}</div>` : ""}</div>` : ""}
         <div style="position:relative"><button class="icon-btn" data-act="menu" data-m="notif" title="التنبيهات">${ic("bell")}${unread ? `<span class="dot">${unread > 99 ? "99+" : unread}</span>` : ""}</button>
           ${UI.menu === "notif" ? `<div class="dropdown" style="width:360px;max-height:460px;overflow:auto"><div class="row between" style="padding:6px 8px"><b>التنبيهات</b><button class="btn sm ghost" style="width:auto" data-act="readAll">تعليم الكل كمقروء</button></div>${notifs.length ? notifs.slice(0, 40).map((n) => `<a href="${n.link}" data-act="readNotif" data-k="${n.key}" style="align-items:flex-start;${S.readNotifs[u.id + n.key] ? "opacity:.55" : ""}"><span class="badge b-${n.type === "red" ? "red" : n.type === "amber" ? "amber" : n.type === "green" ? "green" : "blue"}" style="padding:2px 6px"></span><span class="col" style="gap:0"><b class="small">${esc(n.title)}</b><span class="xs muted">${esc(n.body)}</span></span></a>`).join("") : emptyBox("لا توجد تنبيهات", "bell")}</div>` : ""}</div>
         <div style="position:relative"><div class="user-chip" data-act="menu" data-m="user"><div class="txt col" style="gap:0;text-align:left"><b class="small">${esc(u.name)}</b><span class="xs muted">${ROLE_LABEL[u.role]}</span></div><div class="avatar">${esc(u.name[0])}</div></div>
-          ${UI.menu === "user" ? `<div class="dropdown"><div style="padding:8px 10px" class="small muted">آخر دخول: <span class="num">${fmtDT(S.logins.filter((l) => l.username === u.username && l.ok).slice(-2)[0]?.at)}</span></div><a href="#/profile">${ic("user")}الملف الشخصي وكلمة المرور</a><button data-act="switchUser">${ic("repeat")}تبديل المستخدم (للعرض)</button><button data-act="logout" style="color:var(--red)">${ic("logout")}تسجيل الخروج</button></div>` : ""}</div>
+          ${UI.menu === "user" ? `<div class="dropdown"><div style="padding:8px 10px" class="small muted">آخر دخول: <span class="num">${fmtDT(S.logins.filter((l) => l.username === u.username && l.ok).slice(-2)[0]?.at)}</span></div><button data-act="toggleTheme">${ic("moon")}${document.documentElement.dataset.theme === "dark" ? "الوضع النهاري" : "الوضع الليلي"}</button><button data-act="shortcuts">${ic("keyboard")}اختصارات لوحة المفاتيح</button><a href="#/profile">${ic("user")}الملف الشخصي وكلمة المرور</a><button data-act="switchUser">${ic("repeat")}تبديل المستخدم (للعرض)</button><button data-act="logout" style="color:var(--red)">${ic("logout")}تسجيل الخروج</button></div>` : ""}</div>
       </header>
       <main class="content${enter ? " enter" : ""}" id="content" tabindex="-1">${content}</main>
     </div>
+    ${toolsPanel()}
   </div>`;
 }
 
@@ -4458,11 +4539,12 @@ Object.assign(ACTIONS, {
 
 route("/customers", [], () => {
   const u = ME;
-  const rows = S.customers.filter((c) => canSeeCustomer(u, c));
+  const rows = S.customers.filter((c) => canSeeCustomer(u, c)).sort((a, b) => (isFav(b.id) ? 1 : 0) - (isFav(a.id) ? 1 : 0));
   return `${pageHead(u.role === "SELLER" ? "عملائي" : "العملاء", `${rows.length} عميل — ابحث بأي من المفاتيح الخمسة: الهوية، الإقامة، السجل التجاري، العلامة التجارية، الجوال`, can(u, "customers.create") || u.role === "OWNER" ? `<button class="btn primary" data-act="quick" data-h="@customer">${ic("plus")}عميل جديد</button>` : "")}
   ${table(
     "customers",
     [
+      { key: "fav", label: "★", search: false, value: (c) => (isFav(c.id) ? 1 : 0), text: (c) => (isFav(c.id) ? "مفضل" : ""), render: (c) => `<button class="star sm ${isFav(c.id) ? "on" : ""}" data-act="fav" data-c="${c.id}" title="المفضلة" aria-pressed="${isFav(c.id)}">${ic("star")}</button>` },
       { key: "code", label: "الكود", text: (c) => c.code, render: (c) => `<span class="num">${c.code}</span>` },
       { key: "name", label: "العميل", text: (c) => c.name + " " + (c.tradeName || ""), render: (c) => `<a class="link" href="#/customers/${c.id}">${esc(c.name)}</a>${blacklistState(c.id) ? ' <span class="badge b-red">قائمة سوداء</span>' : ""}` },
       { key: "type", label: "النوع", text: (c) => (c.type === "COMPANY" ? "منشأة" : "فرد") },
@@ -4478,9 +4560,11 @@ route("/customers", [], () => {
     rows,
     {
       sort: "bal",
+      pinFirst: (c) => isFav(c.id),
       rowLink: (c) => "/customers/" + c.id,
       hidden: ["file"],
       filters: [
+        { key: "fav", label: "المفضلة", options: [["1", "المفضلون فقط"]], match: (c) => isFav(c.id) },
         { key: "type", label: "النوع", options: [["COMPANY", "منشأة"], ["INDIVIDUAL", "فرد"]], match: (c, v) => c.type === v },
         { key: "rep", label: "المندوب", options: S.reps.map((r) => [r.id, r.name]), match: (c, v) => c.repId === v },
         { key: "debt", label: "المديونية", options: [["debt", "عليه ذمة"], ["od", "متأخر"], ["site", "لديه معدات"]], match: (c, v) => (v === "debt" ? customerSummary(c.id).balance > 0 : v === "od" ? customerSummary(c.id).overdue.length > 0 : customerSummary(c.id).onSite > 0) },
@@ -4509,12 +4593,12 @@ route("/customers/:id", [], ({ id }, query) => {
   const proj = pid ? byId(S.projects, pid) : null;
   const qs = pid ? `&project=${pid}` : "";
   const sellerScope = u.role === "SELLER";
-  const idRow = (label, v) => (v ? `<div class="row between small"><span class="muted">${label}</span><b class="num">${v}</b></div>` : "");
+  const idRow = (label, v) => (v ? `<div class="row between small"><span class="muted">${label}</span><span class="row" style="gap:4px"><b class="num">${v}</b><button class="btn sm ghost icon-only" data-act="copy" data-v="${v}" title="نسخ">${ic("copy")}</button></span></div>` : "");
 
   const projCards = projects
     .map((p) => {
       const s = customerSummary(c.id, p.id);
-      return `<div class="card proj ${pid === p.id ? "sel" : ""}" data-go="/customers/${c.id}?project=${p.id}"><div class="row between"><b>${esc(p.name)}</b><span class="xs faint num">${p.code}</span></div><div class="xs muted">${ic("map").replace("<svg", '<svg style="width:12px;height:12px;vertical-align:-2px"')} ${esc(p.location || "—")}</div>
+      return `<div class="card proj ${pid === p.id ? "sel" : ""}" data-go="/customers/${c.id}?project=${p.id}"><div class="row between"><b>${esc(p.name)}</b><span class="row" style="gap:2px"><button class="btn sm ghost icon-only" data-act="pinNote" data-kind="project" data-id="${p.id}" title="ملاحظة مثبتة على المشروع">${ic("pin")}</button><span class="xs faint num">${p.code}</span></span></div>${p.pinnedNote ? `<div class="xs proj-note">${ic("pin")} ${esc(p.pinnedNote.text)}</div>` : ""}<div class="xs muted">${ic("map").replace("<svg", '<svg style="width:12px;height:12px;vertical-align:-2px"')} ${esc(p.location || "—")}</div>
       <div class="mini-stats"><div><b class="num">${nf0.format(s.onSite)}</b><span>قطعة بالموقع</span></div><div><b class="num">${nf2.format(s.balance / 100)}</b><span>ذمة (ر.س)</span></div><div><b class="num">${nf2.format(s.accrued / 100)}</b><span>إيجار مستحق حتى اليوم</span></div><div><b class="num">${s.activeRentals.length}</b><span>عقود نشطة</span></div></div></div>`;
     })
     .join("");
@@ -4594,12 +4678,12 @@ route("/customers/:id", [], ({ id }, query) => {
     <div class="card span3"><div class="card-h"><h3>تسلسل النشاط</h3></div><div class="card-b timeline">${auditEv.map((a) => `<div class="tl"><b class="small">${esc(a.action)}</b> <span class="xs muted">${esc(userName(a.userId))} · <span class="num">${fmtDT(a.at)}</span></span>${a.after ? `<span class="xs faint num" style="direction:ltr"> ${esc(JSON.stringify(a.after))}</span>` : ""}</div>`).join("")}</div></div></div>`;
   }
 
-  return `${pageHead(esc(c.name), `${c.code}${c.fileNo ? " · ملف " + c.fileNo : ""} · ${c.type === "COMPANY" ? "منشأة" : "فرد"} · ${esc(c.city)}`, `${can(u, "sales.create") ? `<a class="btn primary" href="#/sales/new?customer=${c.id}${qs}">${ic("cart")}بيع</a>` : ""}${can(u, "rentals.create") ? `<a class="btn primary" href="#/rentals/new?customer=${c.id}${qs}">${ic("key")}إيجار</a>` : ""}${can(u, "payments.create") && all.balance > 0 ? `<button class="btn" data-act="payCustomer" data-c="${c.id}" data-p="${pid || ""}">${ic("cash")}تحصيل</button>` : ""}${can(u, "promissory") ? `<button class="btn" data-act="addPN" data-c="${c.id}" data-p="${pid || ""}">${ic("doc")}سند لأمر</button>` : ""}<a class="btn" href="#/print/rentbill/${c.id}${pid ? "?project=" + pid : ""}">${ic("file")}فاتورة إيجارات الفترة</a><a class="btn" href="#/print/acct/${c.id}${pid ? "?project=" + pid : ""}">${ic("receipt")}كشف حساب</a><a class="btn" href="#/print/statement/${c.id}${pid ? "?project=" + pid : ""}">${ic("print")}كرت العميل</a>`, `<a href="#/customers">العملاء</a> / ${esc(c.name)}`)}
-  ${bl ? `<div class="alert danger" style="margin-bottom:14px">${ic("ban")}<div><b>في القائمة السوداء (${bl.scope === "CREDIT" ? "الآجل فقط" : "كل العمليات الجديدة"})</b> — ${esc(bl.reason)} · قرار ${esc(userName(bl.by))} في ${fmtDate(bl.at)}. تسوية المستحقات ورد المعدات تبقى ممكنة.</div></div>` : ""}
+  return `${pageHead(`<button class="star ${isFav(c.id) ? "on" : ""}" data-act="fav" data-c="${c.id}" title="${isFav(c.id) ? "إزالة من المفضلة" : "إضافة إلى المفضلة"}" aria-pressed="${isFav(c.id)}">${ic("star")}</button>${esc(c.name)}`, `${c.code}${c.fileNo ? " · ملف " + c.fileNo : ""} · ${c.type === "COMPANY" ? "منشأة" : "فرد"} · ${esc(c.city)}`, `${can(u, "sales.create") ? `<a class="btn primary" href="#/sales/new?customer=${c.id}${qs}">${ic("cart")}بيع</a>` : ""}${can(u, "rentals.create") ? `<a class="btn primary" href="#/rentals/new?customer=${c.id}${qs}">${ic("key")}إيجار</a>` : ""}${can(u, "payments.create") && all.balance > 0 ? `<button class="btn" data-act="payCustomer" data-c="${c.id}" data-p="${pid || ""}">${ic("cash")}تحصيل</button>` : ""}${can(u, "promissory") ? `<button class="btn" data-act="addPN" data-c="${c.id}" data-p="${pid || ""}">${ic("doc")}سند لأمر</button>` : ""}<a class="btn" href="#/print/rentbill/${c.id}${pid ? "?project=" + pid : ""}">${ic("file")}فاتورة إيجارات الفترة</a><a class="btn" href="#/print/acct/${c.id}${pid ? "?project=" + pid : ""}">${ic("receipt")}كشف حساب</a><a class="btn" href="#/print/statement/${c.id}${pid ? "?project=" + pid : ""}">${ic("print")}كرت العميل</a>${all.balance > 0 && can(u, "payments.create") ? waButton(c.mobile, msgStatement(c, all.balance), "واتساب الرصيد") : ""}<button class="btn" data-act="pinNote" data-kind="customer" data-id="${c.id}">${ic("pin")}ملاحظة مثبتة</button>`, `<a href="#/customers">العملاء</a> / ${esc(c.name)}`)}
+  ${c.pinnedNote ? `<div class="alert warn pinned" style="margin-bottom:14px">${ic("pin")}<div class="grow"><b>${esc(c.pinnedNote.text)}</b><div class="xs">ملاحظة مثبتة — ${esc(userName(c.pinnedNote.by))} · ${fmtDate(c.pinnedNote.at)}</div></div><button class="btn sm ghost" data-act="pinNote" data-kind="customer" data-id="${c.id}">تعديل</button></div>` : ""}${proj && proj.pinnedNote ? `<div class="alert info pinned" style="margin-bottom:14px">${ic("pin")}<div class="grow"><b>مشروع ${esc(proj.name)}: ${esc(proj.pinnedNote.text)}</b><div class="xs">${esc(userName(proj.pinnedNote.by))} · ${fmtDate(proj.pinnedNote.at)}</div></div><button class="btn sm ghost" data-act="pinNote" data-kind="project" data-id="${proj.id}">تعديل</button></div>` : ""}${bl ? `<div class="alert danger" style="margin-bottom:14px">${ic("ban")}<div><b>في القائمة السوداء (${bl.scope === "CREDIT" ? "الآجل فقط" : "كل العمليات الجديدة"})</b> — ${esc(bl.reason)} · قرار ${esc(userName(bl.by))} في ${fmtDate(bl.at)}. تسوية المستحقات ورد المعدات تبقى ممكنة.</div></div>` : ""}
   <div class="grid cust-top">
     <div class="card card-b col" style="gap:8px">
       <div class="row"><div class="avatar" style="width:44px;height:44px;font-size:20px">${esc(c.name[0])}</div><div class="col" style="gap:0"><b>${esc(c.name)}</b>${c.tradeName ? `<span class="small muted">العلامة التجارية: ${esc(c.tradeName)}</span>` : ""}</div></div>
-      <div class="row between small"><span class="muted">الجوال</span><b class="num">${c.mobile}</b></div>
+      <div class="row between small"><span class="muted">الجوال</span><span class="row" style="gap:4px"><b class="num">${c.mobile}</b><button class="btn sm ghost icon-only" data-act="copy" data-v="${c.mobile}" title="نسخ">${ic("copy")}</button></span></div>
       ${idRow("الهوية الوطنية", c.nationalId)}${idRow("الإقامة", c.iqama)}${idRow("السجل التجاري", c.cr)}${idRow("الرقم الضريبي", c.vat)}
       <div style="border-top:1px dashed var(--border);padding-top:8px;margin-top:2px"><div class="row between small"><b>الكفيل الغارم</b>${can(u, "customers.create") || canAny(u, "customers.viewAll") ? `<button class="btn sm ghost" data-act="editGuarantor" data-c="${c.id}">${ic(c.guarantor ? "edit" : "plus")}${c.guarantor ? "تعديل" : "إضافة"}</button>` : ""}</div>${c.guarantor ? `<div class="row between small"><span class="muted">الاسم</span><b>${esc(c.guarantor)}</b></div>${c.guarantorId ? `<div class="row between small"><span class="muted">الهوية / الإقامة</span><b class="num">${c.guarantorId}</b></div>` : ""}${c.guarantorMobile ? `<div class="row between small"><span class="muted">الجوال</span><b class="num">${c.guarantorMobile}</b></div>` : ""}` : '<div class="xs faint">لا يوجد كفيل — اختياري</div>'}</div>
       <div class="row between small"><span class="muted">المندوب</span><b>${esc(byId(S.reps, c.repId)?.name || "—")}</b></div>
@@ -4889,7 +4973,7 @@ route("/invoices/:id", ["invoices", "invoices.own"], ({ id }) => {
   const pays = S.payments.filter((p) => p.allocations.some((a) => a.invoiceId === i.id));
   const ref = i.kind === "SALE" ? byId(S.sales, i.refId) : byId(S.rentals, i.refId);
   const refLink = i.kind === "SALE" ? `#/sales/${i.refId}` : `#/rentals/${i.refId}`;
-  return `${pageHead(`فاتورة ${i.no}`, `${esc(custName(i.customerId))} · ${esc(projName(i.projectId))}`, `${badge(invStatus(i))}${can(ME, "payments.create") && invRemaining(i) > 0 ? `<button class="btn primary" data-act="pay" data-inv="${i.id}">${ic("cash")}تسجيل تحصيل</button>` : ""}<a class="btn" href="#/print/invoice/${i.id}">${ic("print")}طباعة</a>`, `<a href="#/invoices">الفواتير</a> / ${i.no}`)}
+  return `${pageHead(`فاتورة ${i.no}`, `${esc(custName(i.customerId))} · ${esc(projName(i.projectId))}`, `${badge(invStatus(i))}${can(ME, "payments.create") && invRemaining(i) > 0 ? `<button class="btn primary" data-act="pay" data-inv="${i.id}">${ic("cash")}تسجيل تحصيل</button>` : ""}<a class="btn" href="#/print/invoice/${i.id}">${ic("print")}طباعة</a>${i.status !== "CANCELLED" ? waButton(byId(S.customers, i.customerId).mobile, msgInvoice(i)) : ""}`, `<a href="#/invoices">الفواتير</a> / ${i.no}`)}
   ${i.status === "CANCELLED" ? `<div class="alert danger" style="margin-bottom:14px">${ic("ban")}<div><b>فاتورة ملغاة</b> — ${esc(i.cancelNote || "")}</div></div>` : ""}<div class="grid g4">${kpi({ label: "الإجمالي", value: sar(i.total), icon: "file" })}${kpi({ label: "المدفوع", value: sar(invPaid(i)), icon: "cash", color: "#047857" })}${kpi({ label: "المتبقي", value: sar(invRemaining(i)), icon: "alert", color: "#d1495b" })}${kpi({ label: "الاستحقاق", value: dateNum(i.due), icon: "calendar", sub: invStatus(i) === "OVERDUE" ? `متأخرة ${dayNo(Date.now()) - dayNo(i.due)} يوم` : "" })}</div>
   <div class="grid g3" style="margin-top:14px">
     <div class="card span2"><div class="card-h"><h3>البنود</h3><span class="chip">ضريبة ${i.rate}% محفوظة في المستند</span></div><div class="tbl-wrap"><table class="tbl"><thead><tr><th>البيان</th><th>الكمية</th><th>السعر</th><th>الخصم</th><th>الصافي</th></tr></thead><tbody>${i.items.map((it) => `<tr><td>${esc(it.desc)}</td><td>${int(it.qty)}</td><td>${money(it.price)}</td><td>${money(it.disc)}</td><td>${money(it.net)}</td></tr>`).join("")}</tbody><tfoot><tr><td colspan="3">الإجمالي ${money(i.gross)} − خصم ${money(i.disc)} = وعاء ${money(i.taxable)} + ضريبة ${money(i.vat)}</td><td colspan="2">${sar(i.total)}</td></tr></tfoot></table></div></div>
@@ -5000,7 +5084,7 @@ route("/payments/:id", ["payments", "payments.own"], ({ id }) => {
   const p = byId(S.payments, id);
   if (!p) return emptyBox("غير موجود");
   if (!canSeePayment(ME, p)) throw new DomainError("السند خارج نطاق صلاحيتك");
-  return `${pageHead(`سند قبض ${p.no}`, `${esc(custName(p.customerId))} · ${fmtDT(p.at)}`, `${badge("POSTED")}<a class="btn primary" href="#/print/rv/${p.id}">${ic("print")}طباعة السند</a>`, `<a href="#/payments">سندات القبض</a> / ${p.no}`)}
+  return `${pageHead(`سند قبض ${p.no}`, `${esc(custName(p.customerId))} · ${fmtDT(p.at)}`, `${badge("POSTED")}<a class="btn primary" href="#/print/rv/${p.id}">${ic("print")}طباعة السند</a>${waButton(byId(S.customers, p.customerId).mobile, msgPayment(p))}`, `<a href="#/payments">سندات القبض</a> / ${p.no}`)}
   <div class="grid g4">${kpi({ label: "المبلغ", value: sar(p.amount), icon: "cash", color: "#047857" })}${kpi({ label: "المندوب", value: esc(p.repName || "—"), icon: "user", sub: "محفوظ كما كان وقت الإصدار" })}${kpi({ label: "الحساب", value: esc(accName(p.accountId)), icon: "bank", sub: METHOD[p.method] })}${kpi({ label: "سجّله (موظف المالية)", value: esc(userName(p.recordedBy)), icon: "shield" })}</div>
   <div class="grid g2" style="margin-top:14px"><div class="card"><div class="card-h"><h3>التخصيص على الفواتير</h3></div><div class="tbl-wrap"><table class="tbl"><thead><tr><th>الفاتورة</th><th>المشروع</th><th>المبلغ المخصص</th><th>المتبقي الآن</th></tr></thead><tbody>${p.allocations.map((a) => { const i = byId(S.invoices, a.invoiceId); return `<tr class="click" data-go="/invoices/${i.id}"><td class="num link">${i.no}</td><td>${esc(projName(i.projectId))}</td><td>${sar(a.amount)}</td><td>${sar(invRemaining(i))}</td></tr>`; }).join("")}</tbody></table></div></div>
   <div class="card"><div class="card-h"><h3>البيانات</h3></div><div class="card-b col" style="gap:6px"><div class="row between"><span class="muted">العميل</span><a class="link" href="#/customers/${p.customerId}">${esc(custName(p.customerId))}</a></div><div class="row between"><span class="muted">المشروع</span><b>${esc(projName(p.projectId))}</b></div><div class="row between"><span class="muted">المرجع</span><b class="num">${esc(p.ref || "—")}</b></div><div class="row between"><span class="muted">التاريخ هجري</span><b class="num">${fmtHijri(p.at)}</b></div><div class="row between"><span class="muted">القيد المحاسبي</span><b>قيد واحد +${money(p.amount)} في ${esc(accName(p.accountId))}</b></div>${p.notes ? `<div class="muted small">${esc(p.notes)}</div>` : ""}</div></div></div>`;
@@ -5016,7 +5100,7 @@ route("/accounts", ["accounts"], () => {
       const inn = t.filter((x) => x.dir === "IN").reduce((s, x) => s + x.amount, 0);
       const out = t.filter((x) => x.dir === "OUT").reduce((s, x) => s + x.amount, 0);
       return `<div class="card kpi" data-go="/accounts/${a.id}"><div class="top"><div class="col" style="gap:0"><b>${esc(a.name)}</b><span class="xs muted">${a.type === "CASH" ? "صندوق" : esc(a.bank)}</span></div><div class="ic">${ic(a.type === "CASH" ? "cash" : "bank")}</div></div><div class="val">${sar(accountBalance(a.id))}</div>
-      <div class="col small" style="margin-top:8px;gap:2px"><div class="row between"><span class="muted">الافتتاحي</span><span>${money(a.opening)}</span></div><div class="row between"><span class="muted">المقبوضات</span><span style="color:var(--green)">+${money(inn)}</span></div><div class="row between"><span class="muted">المدفوعات</span><span style="color:var(--red)">−${money(out)}</span></div><div class="row between" style="border-top:1px solid var(--border);padding-top:4px"><b>الحالي</b><b>${money(a.opening + inn - out)}</b></div></div></div>`;
+      ${a.iban ? `<div class="row between xs" style="margin-top:6px"><span class="num muted">${esc(a.iban)}</span><button class="btn sm ghost icon-only" data-act="copy" data-v="${esc(a.iban)}" title="نسخ الآيبان">${ic("copy")}</button></div>` : ""}<div class="col small" style="margin-top:8px;gap:2px"><div class="row between"><span class="muted">الافتتاحي</span><span>${money(a.opening)}</span></div><div class="row between"><span class="muted">المقبوضات</span><span style="color:var(--green)">+${money(inn)}</span></div><div class="row between"><span class="muted">المدفوعات</span><span style="color:var(--red)">−${money(out)}</span></div><div class="row between" style="border-top:1px solid var(--border);padding-top:4px"><b>الحالي</b><b>${money(a.opening + inn - out)}</b></div></div></div>`;
     })
     .join("")}</div>
   <div class="section-title">آخر الحركات</div>${txTable("tx-all", txs)}`;
@@ -5866,7 +5950,7 @@ route("/print/acct/:id", [], ({ id }, query) => {
     <tfoot><tr><th colspan="3" style="text-align:right">الإجمالي ( ${tafqeet(Math.max(0, bal)).replace("فقط ", "")} )</th><th class="num">${nf2.format(dSum / 100)}</th><th class="num">${nf2.format(cSum / 100)}</th><th class="num">${nf2.format(bal / 100)}</th></tr></tfoot></table>
     <div class="small" style="margin-top:12px;color:#0f172a"><b>ملحوظة:</b> كشف الحساب المقدم مطابق ماليًا وكميًا في حالة عدم الاعتراض عليه خلال ثلاثة أيام من توقيعكم بالاستلام.</div>
     <div class="ps-sign"><div>المستلم</div><div>${COMPANY.name}</div></div>${tplStamp(Date.now())}${sheetFoot()}</div>`;
-  return `<div class="content" style="max-width:1150px">${pageHead("كشف حساب العميل", `${esc(c.name)} — بنفس شكل كشف «ك» المعتمد في المؤسسة`, `${periodPicker("/print/acct", id, pid, from, to)}${pdfBtn()}<button class="btn primary" onclick="window.print()">${ic("print")}طباعة</button><a class="btn" href="#/customers/${id}${pid ? "?project=" + pid : ""}">رجوع</a>`)}<div class="print-wrap">${sheet}</div></div>`;
+  return `<div class="content" style="max-width:1150px">${pageHead("كشف حساب العميل", `${esc(c.name)} — بنفس شكل كشف «ك» المعتمد في المؤسسة`, `${periodPicker("/print/acct", id, pid, from, to)}${bal > 0 ? waButton(c.mobile, msgStatement(c, bal), "واتساب الرصيد") : ""}${pdfBtn()}<button class="btn primary" onclick="window.print()">${ic("print")}طباعة</button><a class="btn" href="#/customers/${id}${pid ? "?project=" + pid : ""}">رجوع</a>`)}<div class="print-wrap">${sheet}</div></div>`;
 });
 
 /* ─── الحركة الشهرية للصندوق — فرع المدينة ─── */
@@ -5976,6 +6060,451 @@ route("/cashbook", ["daily"], (_, query) => {
     .join("")}</div>`;
 });
 
+/* ── tools.js ── */
+/* ═══════════ أدوات مساعدة للموظفين (CR-004) ═══════════
+   حاسبة، حاسبة إيجار، أمتار، تاريخ هجري، تفقيط، ملاحظات، تذكيرات، مفضلة، واتساب، نسخ، اختصارات، وضع ليلي.
+   لا تغيّر أي رصيد أو قاعدة حساب. */
+"use strict";
+
+/* ─── دوال نقية (مختبرة في سيناريوهات القبول) ─── */
+
+/** آلة حاسبة آمنة بلا eval: + − × ÷ % وأقواس، وتقبل الأرقام العربية */
+function calcEval(input) {
+  const src = toLatin(String(input || ""))
+    .replace(/[×xX*]/g, "*")
+    .replace(/[÷/]/g, "/")
+    .replace(/[−–—]/g, "-")
+    .replace(/٫/g, ".")
+    .replace(/[,٬\s]/g, "");
+  if (!src) return null;
+  // تقطيع يدوي بلا تعابير منتظمة (لا مخاطر ReDoS على مدخلات المستخدم)
+  if (src.length > 200) throw new Error("الصيغة طويلة جدًا");
+  const tokens = [];
+  for (let p = 0; p < src.length; ) {
+    const ch = src[p];
+    if ("+-*/%()".includes(ch)) {
+      tokens.push(ch);
+      p++;
+    } else if (ch >= "0" && ch <= "9") {
+      let q = p;
+      let dot = false;
+      while (q < src.length && ((src[q] >= "0" && src[q] <= "9") || (src[q] === "." && !dot))) {
+        if (src[q] === ".") dot = true;
+        q++;
+      }
+      tokens.push(src.slice(p, q));
+      p = q;
+    } else throw new Error("صيغة غير صحيحة");
+  }
+  let i = 0;
+  const peek = () => tokens[i];
+  const next = () => tokens[i++];
+  function factor() {
+    let t = next();
+    if (t === "-") return -factor();
+    if (t === "+") return factor();
+    let v;
+    if (t === "(") {
+      v = expr();
+      if (next() !== ")") throw new Error("قوس ناقص");
+    } else if (/^\d/.test(t || "")) v = parseFloat(t);
+    else throw new Error("صيغة غير صحيحة");
+    while (peek() === "%") {
+      next();
+      v = v / 100;
+    }
+    return v;
+  }
+  function term() {
+    let v = factor();
+    while (peek() === "*" || peek() === "/") {
+      const op = next();
+      const r = factor();
+      if (op === "/" && r === 0) throw new Error("القسمة على صفر");
+      v = op === "*" ? v * r : v / r;
+    }
+    return v;
+  }
+  function expr() {
+    let v = term();
+    while (peek() === "+" || peek() === "-") {
+      const op = next();
+      // «100 + 15%» تعني زيادة 15% من 100
+      const save = i;
+      const r = term();
+      const wasPct = tokens[i - 1] === "%" && tokens.slice(save, i).filter((x) => x === "%").length === 1 && tokens.slice(save, i).length === 2;
+      const add = wasPct ? v * r : r;
+      v = op === "+" ? v + add : v - add;
+    }
+    return v;
+  }
+  const v = expr();
+  if (i !== tokens.length) throw new Error("صيغة غير صحيحة");
+  return Math.round(v * 1e6) / 1e6;
+}
+
+/** عرض سعر إيجار سريع — نفس قاعدة الفوترة (BR-015): العدد × الشهري ÷ 30 × الأيام */
+function quickRentalQuote(qty, monthlyHalalas, days, vatRate) {
+  const amount = Math.round((qty * days * monthlyHalalas) / 30);
+  const vat = vatOf(amount, vatRate);
+  return { amount, vat, total: amount + vat };
+}
+
+/** الأيام بين تاريخين شاملة اليومين (عرف المؤسسة) */
+const inclusiveDays = (fromISO, toISO) => dayNo(parseDay(toISO)) - dayNo(parseDay(fromISO)) + 1;
+
+/** رقم واتساب دولي من جوال سعودي */
+function waNumber(mobile) {
+  const m = normalizeMobile(mobile);
+  return /^05\d{8}$/.test(m) ? "966" + m.slice(1) : "";
+}
+const waLink = (mobile, text) => (waNumber(mobile) ? `https://wa.me/${waNumber(mobile)}?text=${encodeURIComponent(text)}` : "");
+
+/** هجري ← ميلادي: بحث في نطاق قريب باستخدام تقويم أم القرى */
+function hijriParts(t) {
+  const f = new Intl.DateTimeFormat("en-u-ca-islamic-umalqura-nu-latn", { timeZone: "Asia/Riyadh", year: "numeric", month: "numeric", day: "numeric" });
+  const p = Object.fromEntries(f.formatToParts(new Date(t)).filter((x) => x.type !== "literal").map((x) => [x.type, parseInt(x.value, 10)]));
+  return { y: p.year, m: p.month, d: p.day };
+}
+function hijriToGregorian(y, m, d) {
+  // تقدير أولي ثم بحث ±40 يومًا
+  const approx = Date.UTC(622, 6, 16) + ((y - 1) * 354.36707 + (m - 1) * 29.530588 + (d - 1)) * DAY;
+  for (let k = -40; k <= 40; k++) {
+    const t = approx + k * DAY;
+    const h = hijriParts(t);
+    if (h.y === y && h.m === m && h.d === d) return dayStart(dayNo(t));
+  }
+  return null;
+}
+
+/* ─── الحالة الإضافية (لا تمسح بيانات المستخدم) ─── */
+function ensureToolsState() {
+  if (!S) return;
+  S.notes ||= {};
+  S.reminders ||= [];
+  S.favorites ||= {};
+}
+const isFav = (cid) => !!(ME && S.favorites?.[ME.id]?.includes(cid));
+
+/* ─── اللوحة ─── */
+const TOOL_TABS = [
+  ["calc", "calc", "الحاسبة"],
+  ["rent", "key", "حاسبة الإيجار"],
+  ["meters", "hash", "الأمتار والقطع"],
+  ["date", "calendar", "هجري / ميلادي"],
+  ["words", "doc", "التفقيط"],
+  ["notes", "edit", "ملاحظاتي"],
+  ["todo", "bell", "تذكيراتي"],
+];
+UI.tl = { tab: "calc", expr: "", hist: [], rq: 100, rm: "", rd: 30, rf: "", rt: "", rvat: true, rp: "", mc: 10, ml: "4", mm: "", mmL: "4", dg: "", hy: "", hm: "", hd: "", wa: "", rmText: "", rmDue: "", rmCust: "" };
+
+function toolsPanel() {
+  if (!UI.toolsOpen) return "";
+  const T = UI.tl;
+  const tabs = TOOL_TABS.map(([k, i, l]) => `<button class="${T.tab === k ? "on" : ""}" data-act="tlTab" data-k="${k}" title="${l}">${ic(i)}<span>${l}</span></button>`).join("");
+  return `<aside class="tools-panel" aria-label="أدوات"><div class="tools-h"><b>${ic("tools")} الأدوات</b><button class="icon-btn" data-act="toggleTools" title="إغلاق (Esc)">${ic("x")}</button></div><div class="tools-tabs">${tabs}</div><div class="tools-b">${toolBody(T.tab)}</div></aside>`;
+}
+
+function copyBtn(text, label = "نسخ") {
+  return `<button class="btn sm" data-act="copy" data-v="${esc(text)}">${ic("copy")}${label}</button>`;
+}
+
+function toolBody(tab) {
+  const T = UI.tl;
+  if (tab === "calc") {
+    let res = "",
+      err = "";
+    try {
+      const v = calcEval(T.expr);
+      res = v === null ? "" : String(v);
+    } catch (e) {
+      err = e.message;
+    }
+    const keys = ["7", "8", "9", "÷", "4", "5", "6", "×", "1", "2", "3", "−", "0", ".", "%", "+", "(", ")", "⌫", "C"];
+    return `<input class="input calc-in" id="tl-expr" dir="ltr" value="${esc(T.expr)}" placeholder="مثال: 3 × 100 + 15%" data-act-input="tlSet" data-k="expr" autocomplete="off">
+    <div class="calc-out num">${err ? `<span class="faint small">${esc(err)}</span>` : res ? `= ${nf2.format(+res)}` : "&nbsp;"}</div>
+    <div class="calc-keys">${keys.map((k) => `<button class="btn" data-act="calcKey" data-k="${k}">${k}</button>`).join("")}<button class="btn primary" data-act="calcKey" data-k="=" style="grid-column:span 4">=</button></div>
+    <div class="row wrap" style="margin-top:10px"><button class="btn sm" data-act="calcVat" data-k="add">+ ضريبة ${S.settings.vatRate}%</button><button class="btn sm" data-act="calcVat" data-k="remove">بدون ضريبة</button>${res ? copyBtn(res, "نسخ الناتج") : ""}</div>
+    ${T.hist.length ? `<div class="section-title" style="margin:14px 0 6px">السجل</div>${T.hist.slice(-6).reverse().map((h) => `<div class="row between small"><span class="num muted" dir="ltr">${esc(h.e)}</span><b class="num">${nf2.format(h.v)}</b></div>`).join("")}` : ""}`;
+  }
+  if (tab === "rent") {
+    const days = T.rf && T.rt ? Math.max(0, inclusiveDays(T.rf, T.rt)) : parseInt(toLatin(String(T.rd)), 10) || 0;
+    const qty = parseInt(toLatin(String(T.rq)), 10) || 0;
+    const monthly = parseMoney(T.rm || "0");
+    const q = quickRentalQuote(qty, monthly, days, T.rvat ? S.settings.vatRate : 0);
+    const prods = S.products.filter((p) => p.status === "ACTIVE");
+    const msg = `عرض سعر إيجار — ${COMPANY.name}\n${T.rp ? prodName(T.rp) + "\n" : ""}العدد: ${qty} قطعة\nالإيجار الشهري للقطعة: ${nf2.format(monthly / 100)} ر.س\nالمدة: ${days} يوم\nالمبلغ: ${nf2.format(q.amount / 100)} ر.س${T.rvat ? `\nالضريبة ${S.settings.vatRate}%: ${nf2.format(q.vat / 100)} ر.س` : ""}\nالإجمالي: ${nf2.format(q.total / 100)} ر.س`;
+    return `<div class="hint" style="margin-bottom:8px">نفس طريقة فواتير المؤسسة: العدد × الإيجار الشهري ÷ 30 × الأيام (شاملة يوم البداية والنهاية).</div>
+    <div class="field"><label>الصنف (اختياري — يملأ السعر الشهري)</label><select class="select" data-act-change="tlProd"><option value="">—</option>${prods.map((p) => `<option value="${p.id}" ${T.rp === p.id ? "selected" : ""}>${esc(p.name)} — ${nf2.format(p.rentM / 100)} شهريًا</option>`).join("")}</select></div>
+    <div class="form-grid" style="margin-top:8px"><div class="field"><label>العدد</label><input class="input" id="tl-rq" value="${esc(T.rq)}" inputmode="numeric" data-act-input="tlSet" data-k="rq"></div><div class="field"><label>الإيجار الشهري للقطعة</label><input class="input" id="tl-rm" value="${esc(T.rm)}" inputmode="decimal" placeholder="0.00" data-act-input="tlSet" data-k="rm"></div>
+    <div class="field"><label>الأيام</label><input class="input" id="tl-rd" value="${esc(T.rd)}" inputmode="numeric" data-act-input="tlSet" data-k="rd" ${T.rf && T.rt ? "disabled" : ""}></div><div class="field"><label>الضريبة</label><label class="row small"><input type="checkbox" data-act-change="tlVat" ${T.rvat ? "checked" : ""}> تشمل ${S.settings.vatRate}%</label></div>
+    <div class="field"><label>أو من تاريخ</label><input type="date" class="input" value="${T.rf}" data-act-change="tlDate" data-k="rf"></div><div class="field"><label>إلى تاريخ</label><input type="date" class="input" value="${T.rt}" data-act-change="tlDate" data-k="rt"></div></div>
+    <div class="quote"><div class="row between"><span class="muted">المدة</span><b class="num">${days} يوم</b></div><div class="row between"><span class="muted">المبلغ</span><b class="num">${nf2.format(q.amount / 100)}</b></div>${T.rvat ? `<div class="row between"><span class="muted">الضريبة</span><b class="num">${nf2.format(q.vat / 100)}</b></div>` : ""}<div class="row between big"><span>الإجمالي</span><b class="num">${nf2.format(q.total / 100)} ر.س</b></div></div>
+    <div class="row wrap" style="margin-top:10px">${copyBtn(msg, "نسخ العرض")}<input class="input" style="width:150px;height:30px" id="tl-wa" value="${esc(T.wa)}" placeholder="جوال العميل" inputmode="tel" data-act-input="tlSet" data-k="wa">${waLink(T.wa, msg) ? `<a class="btn sm wa" href="${waLink(T.wa, msg)}" target="_blank" rel="noopener">${ic("whatsapp")}واتساب</a>` : ""}</div>`;
+  }
+  if (tab === "meters") {
+    const c = parseInt(toLatin(String(T.mc)), 10) || 0;
+    const l = parseFloat(toLatin(String(T.ml))) || 0;
+    const m = parseFloat(toLatin(String(T.mm))) || 0;
+    const L = parseFloat(toLatin(String(T.mmL))) || 0;
+    const lens = [...new Set(S.products.filter((p) => p.len).map((p) => p.len))].sort((a, b) => a - b);
+    const lenOpts = (sel) => lens.map((x) => `<option value="${x}" ${+sel === x ? "selected" : ""}>${x.toFixed(2)} م</option>`).join("");
+    return `<div class="section-title" style="margin:0 0 8px">العدد ← الأمتار</div><div class="form-grid"><div class="field"><label>العدد (قطع)</label><input class="input" id="tl-mc" value="${esc(T.mc)}" inputmode="numeric" data-act-input="tlSet" data-k="mc"></div><div class="field"><label>طول القطعة</label><select class="select" data-act-change="tlSel" data-k="ml">${lenOpts(T.ml)}</select></div></div>
+    <div class="quote"><div class="row between big"><span>الكمية</span><b class="num">${nf2.format(c * l)} م</b></div></div>
+    <div class="section-title" style="margin:16px 0 8px">الأمتار ← العدد</div><div class="form-grid"><div class="field"><label>الأمتار المطلوبة</label><input class="input" id="tl-mm" value="${esc(T.mm)}" inputmode="decimal" data-act-input="tlSet" data-k="mm"></div><div class="field"><label>طول القطعة</label><select class="select" data-act-change="tlSel" data-k="mmL">${lenOpts(T.mmL)}</select></div></div>
+    <div class="quote"><div class="row between big"><span>العدد اللازم</span><b class="num">${L ? Math.ceil(m / L) : 0} قطعة</b></div>${L && m && m % L ? `<div class="xs faint">يزيد ${nf2.format(Math.ceil(m / L) * L - m)} م عن المطلوب</div>` : ""}</div>`;
+  }
+  if (tab === "date") {
+    const g = T.dg || isoDay(Date.now());
+    const h = hijriParts(parseDay(g) + 12 * 3600000);
+    let back = "";
+    const hy = parseInt(toLatin(T.hy), 10),
+      hm = parseInt(toLatin(T.hm), 10),
+      hd = parseInt(toLatin(T.hd), 10);
+    if (hy && hm && hd) {
+      const t = hijriToGregorian(hy, hm, hd);
+      back = t ? `${fmtDate(t)} م — ${new Intl.DateTimeFormat("ar-SA", { weekday: "long", timeZone: "Asia/Riyadh" }).format(new Date(t + 12 * 3600000))}` : "تاريخ هجري غير صحيح";
+    }
+    return `<div class="section-title" style="margin:0 0 8px">ميلادي ← هجري</div><input type="date" class="input" value="${g}" data-act-change="tlDate" data-k="dg">
+    <div class="quote"><div class="row between big"><span>الهجري (أم القرى)</span><b class="num">${h.d}/${h.m}/${h.y} هـ</b></div>${copyBtn(`${h.d}/${h.m}/${h.y} هـ`)}</div>
+    <div class="section-title" style="margin:16px 0 8px">هجري ← ميلادي</div><div class="form-grid" style="grid-template-columns:repeat(3,1fr)"><div class="field"><label>اليوم</label><input class="input" id="tl-hd" value="${esc(T.hd)}" inputmode="numeric" data-act-input="tlSet" data-k="hd"></div><div class="field"><label>الشهر</label><input class="input" id="tl-hm" value="${esc(T.hm)}" inputmode="numeric" data-act-input="tlSet" data-k="hm"></div><div class="field"><label>السنة</label><input class="input" id="tl-hy" value="${esc(T.hy)}" inputmode="numeric" placeholder="1448" data-act-input="tlSet" data-k="hy"></div></div>
+    ${back ? `<div class="quote"><div class="row between big"><span>الميلادي</span><b class="num">${back}</b></div></div>` : ""}`;
+  }
+  if (tab === "words") {
+    const v = parseMoney(T.w || "0");
+    const txt = v > 0 ? tafqeet(v) : "";
+    return `<div class="field"><label>المبلغ</label><input class="input" id="tl-w" value="${esc(T.w || "")}" inputmode="decimal" placeholder="مثال: 16902.50" data-act-input="tlSet" data-k="w"></div>
+    ${txt ? `<div class="quote"><b style="font-size:15px;line-height:1.8">${esc(txt)}</b></div>${copyBtn(txt)}` : `<div class="hint" style="margin-top:8px">يكتب المبلغ بالحروف كما في سندات القبض والصرف.</div>`}`;
+  }
+  if (tab === "notes") {
+    const mine = S.notes[ME.id] || "";
+    return `<div class="hint" style="margin-bottom:6px">ملاحظات شخصية لك فقط، تُحفظ تلقائيًا أثناء الكتابة.</div><textarea class="input notes-ta" id="tl-notes" data-act-input="tlNotes" placeholder="اكتب ملاحظاتك هنا…">${esc(mine)}</textarea><div class="row between xs faint" style="margin-top:4px"><span>${mine.length} حرف</span>${mine ? copyBtn(mine, "نسخ الكل") : ""}</div>`;
+  }
+  if (tab === "todo") {
+    const mine = S.reminders.filter((r) => r.userId === ME.id).sort((a, b) => a.done - b.done || (a.due || 0) - (b.due || 0));
+    const today = dayNo(Date.now());
+    const custs = S.customers.filter((c) => canSeeCustomer(ME, c));
+    return `<div class="field"><label>تذكير جديد</label><input class="input" id="tl-rmtext" value="${esc(T.rmText)}" placeholder="مثال: اتصل بمؤسسة الأفق بخصوص الدفعة" data-act-input="tlSet" data-k="rmText"></div>
+    <div class="form-grid" style="margin-top:6px"><div class="field"><label>الموعد</label><input type="date" class="input" value="${T.rmDue}" data-act-change="tlDate" data-k="rmDue"></div><div class="field"><label>العميل (اختياري)</label><select class="select" data-act-change="tlSel" data-k="rmCust"><option value="">—</option>${custs.map((c) => `<option value="${c.id}" ${T.rmCust === c.id ? "selected" : ""}>${esc(c.name)}</option>`).join("")}</select></div></div>
+    <button class="btn primary sm" style="margin-top:8px" data-act="rmAdd">${ic("plus")}إضافة التذكير</button>
+    <div style="margin-top:12px">${mine.length ? mine.map((r) => `<div class="todo ${r.done ? "done" : ""}"><input type="checkbox" data-act-change="rmToggle" data-id="${r.id}" ${r.done ? "checked" : ""} aria-label="تم"><div class="grow"><div class="small">${esc(r.text)}</div><div class="xs muted">${r.due ? `<span class="${!r.done && dayNo(r.due) < today ? "late" : !r.done && dayNo(r.due) === today ? "today" : ""}">${fmtDate(r.due)}</span>` : "بدون موعد"}${r.customerId ? ` · <a class="link" href="#/customers/${r.customerId}">${esc(custName(r.customerId))}</a>` : ""}</div></div><button class="btn sm ghost" data-act="rmDel" data-id="${r.id}" title="حذف">${ic("x")}</button></div>`).join("") : emptyBox("لا تذكيرات", "bell")}</div>`;
+  }
+  return "";
+}
+
+/* ─── الإجراءات ─── */
+const keepPanel = () => render();
+Object.assign(ACTIONS, {
+  toggleTools: () => ((UI.toolsOpen = !UI.toolsOpen), render()),
+  tlTab: (el) => ((UI.tl.tab = el.dataset.k), (UI.toolsOpen = true), render()),
+  tlSet: (el) => ((UI.tl[el.dataset.k] = el.value), keepPanel()),
+  tlSel: (el) => ((UI.tl[el.dataset.k] = el.value), keepPanel()),
+  tlDate: (el) => ((UI.tl[el.dataset.k] = el.value), keepPanel()),
+  tlVat: (el) => ((UI.tl.rvat = el.checked), keepPanel()),
+  tlProd: (el) => {
+    UI.tl.rp = el.value;
+    const p = byId(S.products, el.value);
+    if (p) UI.tl.rm = (p.rentM / 100).toFixed(2);
+    keepPanel();
+  },
+  calcKey: (el) => {
+    const k = el.dataset.k;
+    const T = UI.tl;
+    if (k === "C") T.expr = "";
+    else if (k === "⌫") T.expr = T.expr.slice(0, -1);
+    else if (k === "=") {
+      try {
+        const v = calcEval(T.expr);
+        if (v !== null) {
+          T.hist.push({ e: T.expr, v });
+          T.expr = String(v);
+        }
+      } catch (e) {
+        toast(e.message, "err");
+      }
+    } else T.expr += k === "−" ? "-" : k;
+    keepPanel();
+  },
+  calcVat: (el) => {
+    const T = UI.tl;
+    try {
+      const v = calcEval(T.expr);
+      if (v === null) return;
+      const r = S.settings.vatRate / 100;
+      const out = el.dataset.k === "add" ? v * (1 + r) : v / (1 + r);
+      const rounded = Math.round(out * 100) / 100;
+      T.hist.push({ e: `${v} ${el.dataset.k === "add" ? "+" : "−"} ${S.settings.vatRate}%`, v: rounded });
+      T.expr = String(rounded);
+    } catch (e) {
+      toast(e.message, "err");
+    }
+    keepPanel();
+  },
+  tlNotes: (el) => {
+    ensureToolsState();
+    S.notes[ME.id] = el.value;
+    save();
+  },
+  rmAdd: () => {
+    ensureToolsState();
+    const T = UI.tl;
+    if (!T.rmText.trim()) return toast("اكتب نص التذكير", "err");
+    S.reminders.push({ id: uid("rm"), userId: ME.id, text: T.rmText.trim(), due: T.rmDue ? parseDay(T.rmDue) + 9 * 3600000 : null, customerId: T.rmCust || null, done: false, at: Date.now() });
+    T.rmText = "";
+    T.rmCust = "";
+    touch();
+    toast("تمت إضافة التذكير");
+    render();
+  },
+  rmToggle: (el) => {
+    const r = S.reminders.find((x) => x.id === el.dataset.id && x.userId === ME.id);
+    if (r) r.done = el.checked;
+    touch();
+    render();
+  },
+  rmDel: (el) => {
+    S.reminders = S.reminders.filter((x) => !(x.id === el.dataset.id && x.userId === ME.id));
+    touch();
+    render();
+  },
+  copy: (el) => {
+    const v = el.dataset.v || "";
+    const done = () => toast("تم النسخ");
+    if (navigator.clipboard?.writeText) navigator.clipboard.writeText(v).then(done, () => fallbackCopy(v) && done());
+    else if (fallbackCopy(v)) done();
+  },
+  fav: (el) => {
+    ensureToolsState();
+    const list = (S.favorites[ME.id] ||= []);
+    const i = list.indexOf(el.dataset.c);
+    i >= 0 ? list.splice(i, 1) : list.push(el.dataset.c);
+    touch();
+    toast(i >= 0 ? "أُزيل من المفضلة" : "أُضيف إلى المفضلة");
+    render();
+  },
+  pinNote: (el) => {
+    const kind = el.dataset.kind;
+    const obj = kind === "project" ? byId(S.projects, el.dataset.id) : byId(S.customers, el.dataset.id);
+    UI.pn = { kind, id: obj.id, text: obj.pinnedNote?.text || "" };
+    openModal(
+      kind === "project" ? "ملاحظة مثبتة على المشروع — " + esc(obj.name) : "ملاحظة مثبتة على العميل — " + esc(obj.name),
+      () => `<textarea class="input" id="pn-text" style="min-height:110px" data-act-input="pnText" placeholder="مثال: لا يُسلَّم إلا بحضور المهندس">${esc(UI.pn.text)}</textarea><div class="hint" style="margin-top:6px">تظهر لكل الموظفين في أعلى البروفايل. لحذفها امسح النص واحفظ.</div>`,
+      `<button class="btn primary" data-act="pnSave2">${ic("check")}حفظ</button><button class="btn" data-act="closeModal">إلغاء</button>`,
+    );
+  },
+  pnText: (el) => (UI.pn.text = el.value),
+  pnSave2: () => {
+    const obj = UI.pn.kind === "project" ? byId(S.projects, UI.pn.id) : byId(S.customers, UI.pn.id);
+    const before = obj.pinnedNote || null;
+    obj.pinnedNote = UI.pn.text.trim() ? { text: UI.pn.text.trim(), by: ME.id, at: Date.now() } : null;
+    audit(ME, "PINNED_NOTE", UI.pn.kind === "project" ? "Project" : "Customer", obj.id, before, obj.pinnedNote);
+    touch();
+    closeModal();
+    toast("تم حفظ الملاحظة");
+    render();
+  },
+  toggleTheme: () => {
+    const cur = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    setTheme(cur);
+    UI.menu = null;
+    render();
+  },
+  shortcuts: () => openModal("اختصارات لوحة المفاتيح", shortcutsHelp, `<button class="btn" data-act="closeModal">إغلاق</button>`),
+});
+function fallbackCopy(v) {
+  const t = document.createElement("textarea");
+  t.value = v;
+  t.style.position = "fixed";
+  t.style.opacity = "0";
+  document.body.appendChild(t);
+  t.select();
+  let ok = false;
+  try {
+    ok = document.execCommand("copy");
+  } catch (e) {}
+  t.remove();
+  return ok;
+}
+
+/* ─── الوضع الليلي (تفضيل لكل جهاز) ─── */
+function setTheme(t) {
+  document.documentElement.dataset.theme = t;
+  try {
+    localStorage.setItem("barq-theme", t);
+  } catch (e) {}
+}
+(function initTheme() {
+  let t = null;
+  try {
+    t = localStorage.getItem("barq-theme");
+  } catch (e) {}
+  if (t === "dark" || t === "light") document.documentElement.dataset.theme = t;
+})();
+
+/* ─── اختصارات لوحة المفاتيح ─── */
+const SHORTCUTS = [
+  ["N", "بيع جديد", "/sales/new", "sales.create"],
+  ["R", "إيجار جديد", "/rentals/new", "rentals.create"],
+  ["C", "العملاء", "/customers", null],
+  ["I", "الفواتير", "/invoices", "invoices|invoices.own"],
+  ["H", "لوحتي", "@home", null],
+  ["/", "البحث العام", "@search", null],
+  ["T", "الأدوات", "@tools", null],
+  ["K", "الحاسبة", "@calc", null],
+  ["?", "عرض الاختصارات", "@help", null],
+  ["Esc", "إغلاق النافذة أو الأدوات", "", null],
+];
+function shortcutsHelp() {
+  return `<div class="col" style="gap:6px">${SHORTCUTS.filter(([, , , p]) => !p || p.split("|").some((x) => can(ME, x)))
+    .map(([k, l]) => `<div class="row between"><span>${l}</span><kbd>${k}</kbd></div>`)
+    .join("")}</div><div class="hint" style="margin-top:10px">تعمل الاختصارات عندما لا تكون تكتب داخل حقل.</div>`;
+}
+document.addEventListener("keydown", (ev) => {
+  if (!ME || ev.ctrlKey || ev.metaKey || ev.altKey) return;
+  const tag = (ev.target.tagName || "").toLowerCase();
+  if (ev.key === "Escape" && UI.toolsOpen && !UI.modal) {
+    UI.toolsOpen = false;
+    return render();
+  }
+  if (tag === "input" || tag === "textarea" || tag === "select" || ev.target.isContentEditable) return;
+  const key = ev.key.length === 1 ? ev.key.toUpperCase() : ev.key;
+  // تخطيط لوحة المفاتيح العربية: نفس المواضع الفيزيائية
+  const arabic = { "ى": "N", "ق": "R", "ؤ": "C", "ه": "I", "ا": "H", "ف": "T", "ن": "K", "؟": "?" };
+  const k = arabic[ev.key] || key;
+  const sc = SHORTCUTS.find(([s]) => s === k);
+  if (!sc) return;
+  const [, , target, perm] = sc;
+  if (perm && !perm.split("|").some((x) => can(ME, x))) return;
+  ev.preventDefault();
+  if (target === "@home") go(ROLE_HOME[ME.role]);
+  else if (target === "@search") document.getElementById("gsearch")?.focus();
+  else if (target === "@tools") ((UI.toolsOpen = !UI.toolsOpen), render());
+  else if (target === "@calc") ((UI.toolsOpen = true), (UI.tl.tab = "calc"), render(), setTimeout(() => document.getElementById("tl-expr")?.focus(), 0));
+  else if (target === "@help") ACTIONS.shortcuts();
+  else if (target) go(target);
+});
+
+/* ─── الساعة والتاريخ الهجري في الرأس ─── */
+function headerClock() {
+  const now = Date.now();
+  const h = hijriParts(now);
+  return `<div class="hclock" title="بتوقيت الرياض"><b class="num">${timeFmt.format(new Date(now))}</b><span class="num">${h.d}/${h.m}/${h.y} هـ · ${fmtDate(now)}</span></div>`;
+}
+setInterval(() => {
+  const el = document.querySelector(".hclock");
+  if (el) el.outerHTML = headerClock();
+}, 30000);
+
+/* ─── واتساب للمستندات ─── */
+function waButton(mobile, text, label = "واتساب") {
+  const href = waLink(mobile, text);
+  return href ? `<a class="btn wa no-pdf" href="${href}" target="_blank" rel="noopener" title="يفتح واتساب برسالة جاهزة — راجعها قبل الإرسال">${ic("whatsapp")}${label}</a>` : "";
+}
+const msgInvoice = (i) =>
+  `السلام عليكم ${custName(i.customerId)}،\nفاتورة رقم ${i.no} بتاريخ ${fmtDate(i.at)}${i.projectId ? ` — مشروع ${projName(i.projectId)}` : ""}\nالإجمالي: ${nf2.format(i.total / 100)} ر.س\nالمدفوع: ${nf2.format(invPaid(i) / 100)} ر.س\nالمتبقي: ${nf2.format(invRemaining(i) / 100)} ر.س\nتاريخ الاستحقاق: ${fmtDate(i.due)}\n${COMPANY.name}`;
+const msgPayment = (p) => `السلام عليكم ${custName(p.customerId)}،\nاستلمنا منكم مبلغ ${nf2.format(p.amount / 100)} ر.س بسند قبض رقم ${p.no} بتاريخ ${fmtDate(p.at)}.\nشكرًا لكم.\n${COMPANY.name}`;
+const msgStatement = (c, bal) => `السلام عليكم ${c.name}،\nرصيد حسابكم المستحق حتى ${fmtDate(Date.now())}: ${nf2.format(bal / 100)} ر.س.\nللاستفسار يسعدنا تواصلكم.\n${COMPANY.name}`;
+
 /* ── acceptance.js ── */
 /* ═══════════ سيناريوهات القبول: تُنفَّذ آليًا على نسخة معزولة من البيانات ═══════════ */
 "use strict";
@@ -5994,6 +6523,14 @@ function runAcceptance() {
     }
   };
   const U = (n) => S.users.find((u) => u.username === n);
+  const expectErr2 = (fn) => {
+    try {
+      fn();
+      return null;
+    } catch (e) {
+      return e.message;
+    }
+  };
   try {
     seedState(); // بيانات نظيفة ثابتة حتى تكون النتائج قابلة للتكرار
     S.settings.vatRate = 15;
@@ -6198,6 +6735,22 @@ function runAcceptance() {
     const big = createExpense({ cat: "مصروف صيانة", amount: accountBalance("a-cash") + 100, accountId: "a-cash", idemKey: "acc-big" }, fin).expense;
     check(G12, "الكفيل الغارم: الهوية بلا اسم مرفوضة، والصيغ العربية و+966 تُوحَّد، والهوية القصيرة مرفوضة", !!expectErr(() => updateGuarantor(cust.id, { guarantorId: "1023456789" }, s1)) && updateGuarantor(cust.id, { guarantor: "كفيل", guarantorId: "١٠٢٣٤٥٦٧٨٩", guarantorMobile: "+966 55 123 4567" }, s1).guarantorMobile === "0551234567" && !!expectErr(() => updateGuarantor(cust.id, { guarantor: "كفيل", guarantorId: "12345" }, s1)));
     check(G12, "الصندوق لا يصرف أكثر من رصيده (يُرفض الاعتماد)", big.status === "PENDING" && !!expectErr(() => decideApproval(S.approvals.find((x) => x.entityId === big.id).id, "APPROVED", "", owner)) && accountBalance("a-cash") >= 0);
+
+    /* ١٣. الأدوات المساعدة */
+    // قواعد الأعمال: BR-015 BR-044
+    const G13 = "١٣. الأدوات المساعدة (الحاسبة، حاسبة الإيجار، التاريخ، واتساب)";
+    check(G13, "الحاسبة: 3 × 100 + 15% = 345 وتقبل الأرقام العربية", calcEval("3 × 100 + 15%") === 345 && calcEval("٢+٣×٤") === 14 && calcEval("(10+5)÷3") === 5);
+    check(G13, "الحاسبة ترفض الصيغة الخاطئة والقسمة على صفر", !!expectErr2(() => calcEval("2+*3")) && !!expectErr2(() => calcEval("5÷0")));
+    const qq = quickRentalQuote(125, 900, 119, 15);
+    check(G13, "حاسبة الإيجار = قاعدة الفوترة: 125 × 9 ÷ 30 × 119 = 4,462.50", qq.amount === 446250 && qq.vat === 66938 && qq.total === 513188, (qq.amount / 100).toFixed(2));
+    check(G13, "الأيام بين تاريخين شاملة: 01/02 ← 30/05 = 119", inclusiveDays("2026-02-01", "2026-05-30") === 119);
+    const h = hijriParts(parseDay("2026-11-26") + 12 * 3600000);
+    const back = hijriToGregorian(h.y, h.m, h.d);
+    check(G13, "التحويل هجري ↔ ميلادي يرجع لنفس اليوم", back !== null && isoDay(back) === "2026-11-26", `${h.d}/${h.m}/${h.y}`);
+    check(G13, "رقم واتساب الدولي من الجوال (أرقام عربية و+966)", waNumber("٠٥٠١٢٣٤٥٦٧") === "966501234567" && waNumber("+966 50 123 4567") === "966501234567" && waNumber("123") === "");
+    const invW = S.invoices.find((i) => invRemaining(i) > 0);
+    check(G13, "رسالة واتساب للفاتورة تحمل المتبقي الصحيح ورقمها", msgInvoice(invW).includes(nf2.format(invRemaining(invW) / 100)) && msgInvoice(invW).includes(invW.no));
+    check(G13, "التفقيط: 16,902.50", tafqeet(1690250).includes("ستة عشر ألف") && tafqeet(1690250).includes("خمسون هللة"));
 
     /* ١٠. المطابقة */
     // قواعد الأعمال: BR-005

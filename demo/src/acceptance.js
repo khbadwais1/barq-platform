@@ -15,6 +15,14 @@ function runAcceptance() {
     }
   };
   const U = (n) => S.users.find((u) => u.username === n);
+  const expectErr2 = (fn) => {
+    try {
+      fn();
+      return null;
+    } catch (e) {
+      return e.message;
+    }
+  };
   try {
     seedState(); // بيانات نظيفة ثابتة حتى تكون النتائج قابلة للتكرار
     S.settings.vatRate = 15;
@@ -219,6 +227,22 @@ function runAcceptance() {
     const big = createExpense({ cat: "مصروف صيانة", amount: accountBalance("a-cash") + 100, accountId: "a-cash", idemKey: "acc-big" }, fin).expense;
     check(G12, "الكفيل الغارم: الهوية بلا اسم مرفوضة، والصيغ العربية و+966 تُوحَّد، والهوية القصيرة مرفوضة", !!expectErr(() => updateGuarantor(cust.id, { guarantorId: "1023456789" }, s1)) && updateGuarantor(cust.id, { guarantor: "كفيل", guarantorId: "١٠٢٣٤٥٦٧٨٩", guarantorMobile: "+966 55 123 4567" }, s1).guarantorMobile === "0551234567" && !!expectErr(() => updateGuarantor(cust.id, { guarantor: "كفيل", guarantorId: "12345" }, s1)));
     check(G12, "الصندوق لا يصرف أكثر من رصيده (يُرفض الاعتماد)", big.status === "PENDING" && !!expectErr(() => decideApproval(S.approvals.find((x) => x.entityId === big.id).id, "APPROVED", "", owner)) && accountBalance("a-cash") >= 0);
+
+    /* ١٣. الأدوات المساعدة */
+    // قواعد الأعمال: BR-015 BR-044
+    const G13 = "١٣. الأدوات المساعدة (الحاسبة، حاسبة الإيجار، التاريخ، واتساب)";
+    check(G13, "الحاسبة: 3 × 100 + 15% = 345 وتقبل الأرقام العربية", calcEval("3 × 100 + 15%") === 345 && calcEval("٢+٣×٤") === 14 && calcEval("(10+5)÷3") === 5);
+    check(G13, "الحاسبة ترفض الصيغة الخاطئة والقسمة على صفر", !!expectErr2(() => calcEval("2+*3")) && !!expectErr2(() => calcEval("5÷0")));
+    const qq = quickRentalQuote(125, 900, 119, 15);
+    check(G13, "حاسبة الإيجار = قاعدة الفوترة: 125 × 9 ÷ 30 × 119 = 4,462.50", qq.amount === 446250 && qq.vat === 66938 && qq.total === 513188, (qq.amount / 100).toFixed(2));
+    check(G13, "الأيام بين تاريخين شاملة: 01/02 ← 30/05 = 119", inclusiveDays("2026-02-01", "2026-05-30") === 119);
+    const h = hijriParts(parseDay("2026-11-26") + 12 * 3600000);
+    const back = hijriToGregorian(h.y, h.m, h.d);
+    check(G13, "التحويل هجري ↔ ميلادي يرجع لنفس اليوم", back !== null && isoDay(back) === "2026-11-26", `${h.d}/${h.m}/${h.y}`);
+    check(G13, "رقم واتساب الدولي من الجوال (أرقام عربية و+966)", waNumber("٠٥٠١٢٣٤٥٦٧") === "966501234567" && waNumber("+966 50 123 4567") === "966501234567" && waNumber("123") === "");
+    const invW = S.invoices.find((i) => invRemaining(i) > 0);
+    check(G13, "رسالة واتساب للفاتورة تحمل المتبقي الصحيح ورقمها", msgInvoice(invW).includes(nf2.format(invRemaining(invW) / 100)) && msgInvoice(invW).includes(invW.no));
+    check(G13, "التفقيط: 16,902.50", tafqeet(1690250).includes("ستة عشر ألف") && tafqeet(1690250).includes("خمسون هللة"));
 
     /* ١٠. المطابقة */
     // قواعد الأعمال: BR-005

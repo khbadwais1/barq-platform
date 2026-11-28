@@ -4,7 +4,7 @@ import { build } from "esbuild";
 
 const qr = await build({ entryPoints: ["src/qr-entry.js"], bundle: true, minify: true, format: "iife", write: false, nodePaths: ["../node_modules"] });
 const pdf = await build({ entryPoints: ["src/pdf-entry.js"], bundle: true, minify: true, format: "iife", write: false, nodePaths: ["../node_modules"], external: ["html2canvas", "dompurify", "canvg"], logLevel: "error" });
-const files = ["data", "logic", "seed", "ui", "app", "pages-core", "pages-sales", "pages-rentals", "pages-customers", "pages-finance", "pages-admin", "pages-print", "pages-reports", "acceptance"];
+const files = ["data", "logic", "seed", "ui", "app", "pages-core", "pages-sales", "pages-rentals", "pages-customers", "pages-finance", "pages-admin", "pages-print", "pages-reports", "tools", "acceptance"];
 const js = files.map((f) => `/* ── ${f}.js ── */\n` + readFileSync(`src/${f}.js`, "utf8")).join("\n");
 // الخط مضمّن داخل الملف حتى يظهر بشكل صحيح بدون إنترنت
 const fontCss = readFileSync("fonts/plex-subset.css", "utf8").replace(/url\((https:[^)]+\/([^/)]+\.woff2))\)/g, (_, u, f) => `url(data:font/woff2;base64,${readFileSync("fonts/" + f).toString("base64")})`);

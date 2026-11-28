@@ -3,11 +3,12 @@
 
 route("/customers", [], () => {
   const u = ME;
-  const rows = S.customers.filter((c) => canSeeCustomer(u, c));
+  const rows = S.customers.filter((c) => canSeeCustomer(u, c)).sort((a, b) => (isFav(b.id) ? 1 : 0) - (isFav(a.id) ? 1 : 0));
   return `${pageHead(u.role === "SELLER" ? "عملائي" : "العملاء", `${rows.length} عميل — ابحث بأي من المفاتيح الخمسة: الهوية، الإقامة، السجل التجاري، العلامة التجارية، الجوال`, can(u, "customers.create") || u.role === "OWNER" ? `<button class="btn primary" data-act="quick" data-h="@customer">${ic("plus")}عميل جديد</button>` : "")}
   ${table(
     "customers",
     [
+      { key: "fav", label: "★", search: false, value: (c) => (isFav(c.id) ? 1 : 0), text: (c) => (isFav(c.id) ? "مفضل" : ""), render: (c) => `<button class="star sm ${isFav(c.id) ? "on" : ""}" data-act="fav" data-c="${c.id}" title="المفضلة" aria-pressed="${isFav(c.id)}">${ic("star")}</button>` },
       { key: "code", label: "الكود", text: (c) => c.code, render: (c) => `<span class="num">${c.code}</span>` },
       { key: "name", label: "العميل", text: (c) => c.name + " " + (c.tradeName || ""), render: (c) => `<a class="link" href="#/customers/${c.id}">${esc(c.name)}</a>${blacklistState(c.id) ? ' <span class="badge b-red">قائمة سوداء</span>' : ""}` },
       { key: "type", label: "النوع", text: (c) => (c.type === "COMPANY" ? "منشأة" : "فرد") },
@@ -23,9 +24,11 @@ route("/customers", [], () => {
     rows,
     {
       sort: "bal",
+      pinFirst: (c) => isFav(c.id),
       rowLink: (c) => "/customers/" + c.id,
       hidden: ["file"],
       filters: [
+        { key: "fav", label: "المفضلة", options: [["1", "المفضلون فقط"]], match: (c) => isFav(c.id) },
         { key: "type", label: "النوع", options: [["COMPANY", "منشأة"], ["INDIVIDUAL", "فرد"]], match: (c, v) => c.type === v },
         { key: "rep", label: "المندوب", options: S.reps.map((r) => [r.id, r.name]), match: (c, v) => c.repId === v },
         { key: "debt", label: "المديونية", options: [["debt", "عليه ذمة"], ["od", "متأخر"], ["site", "لديه معدات"]], match: (c, v) => (v === "debt" ? customerSummary(c.id).balance > 0 : v === "od" ? customerSummary(c.id).overdue.length > 0 : customerSummary(c.id).onSite > 0) },
@@ -54,12 +57,12 @@ route("/customers/:id", [], ({ id }, query) => {
   const proj = pid ? byId(S.projects, pid) : null;
   const qs = pid ? `&project=${pid}` : "";
   const sellerScope = u.role === "SELLER";
-  const idRow = (label, v) => (v ? `<div class="row between small"><span class="muted">${label}</span><b class="num">${v}</b></div>` : "");
+  const idRow = (label, v) => (v ? `<div class="row between small"><span class="muted">${label}</span><span class="row" style="gap:4px"><b class="num">${v}</b><button class="btn sm ghost icon-only" data-act="copy" data-v="${v}" title="نسخ">${ic("copy")}</button></span></div>` : "");
 
   const projCards = projects
     .map((p) => {
       const s = customerSummary(c.id, p.id);
-      return `<div class="card proj ${pid === p.id ? "sel" : ""}" data-go="/customers/${c.id}?project=${p.id}"><div class="row between"><b>${esc(p.name)}</b><span class="xs faint num">${p.code}</span></div><div class="xs muted">${ic("map").replace("<svg", '<svg style="width:12px;height:12px;vertical-align:-2px"')} ${esc(p.location || "—")}</div>
+      return `<div class="card proj ${pid === p.id ? "sel" : ""}" data-go="/customers/${c.id}?project=${p.id}"><div class="row between"><b>${esc(p.name)}</b><span class="row" style="gap:2px"><button class="btn sm ghost icon-only" data-act="pinNote" data-kind="project" data-id="${p.id}" title="ملاحظة مثبتة على المشروع">${ic("pin")}</button><span class="xs faint num">${p.code}</span></span></div>${p.pinnedNote ? `<div class="xs proj-note">${ic("pin")} ${esc(p.pinnedNote.text)}</div>` : ""}<div class="xs muted">${ic("map").replace("<svg", '<svg style="width:12px;height:12px;vertical-align:-2px"')} ${esc(p.location || "—")}</div>
       <div class="mini-stats"><div><b class="num">${nf0.format(s.onSite)}</b><span>قطعة بالموقع</span></div><div><b class="num">${nf2.format(s.balance / 100)}</b><span>ذمة (ر.س)</span></div><div><b class="num">${nf2.format(s.accrued / 100)}</b><span>إيجار مستحق حتى اليوم</span></div><div><b class="num">${s.activeRentals.length}</b><span>عقود نشطة</span></div></div></div>`;
     })
     .join("");
@@ -139,12 +142,12 @@ route("/customers/:id", [], ({ id }, query) => {
     <div class="card span3"><div class="card-h"><h3>تسلسل النشاط</h3></div><div class="card-b timeline">${auditEv.map((a) => `<div class="tl"><b class="small">${esc(a.action)}</b> <span class="xs muted">${esc(userName(a.userId))} · <span class="num">${fmtDT(a.at)}</span></span>${a.after ? `<span class="xs faint num" style="direction:ltr"> ${esc(JSON.stringify(a.after))}</span>` : ""}</div>`).join("")}</div></div></div>`;
   }
 
-  return `${pageHead(esc(c.name), `${c.code}${c.fileNo ? " · ملف " + c.fileNo : ""} · ${c.type === "COMPANY" ? "منشأة" : "فرد"} · ${esc(c.city)}`, `${can(u, "sales.create") ? `<a class="btn primary" href="#/sales/new?customer=${c.id}${qs}">${ic("cart")}بيع</a>` : ""}${can(u, "rentals.create") ? `<a class="btn primary" href="#/rentals/new?customer=${c.id}${qs}">${ic("key")}إيجار</a>` : ""}${can(u, "payments.create") && all.balance > 0 ? `<button class="btn" data-act="payCustomer" data-c="${c.id}" data-p="${pid || ""}">${ic("cash")}تحصيل</button>` : ""}${can(u, "promissory") ? `<button class="btn" data-act="addPN" data-c="${c.id}" data-p="${pid || ""}">${ic("doc")}سند لأمر</button>` : ""}<a class="btn" href="#/print/rentbill/${c.id}${pid ? "?project=" + pid : ""}">${ic("file")}فاتورة إيجارات الفترة</a><a class="btn" href="#/print/acct/${c.id}${pid ? "?project=" + pid : ""}">${ic("receipt")}كشف حساب</a><a class="btn" href="#/print/statement/${c.id}${pid ? "?project=" + pid : ""}">${ic("print")}كرت العميل</a>`, `<a href="#/customers">العملاء</a> / ${esc(c.name)}`)}
-  ${bl ? `<div class="alert danger" style="margin-bottom:14px">${ic("ban")}<div><b>في القائمة السوداء (${bl.scope === "CREDIT" ? "الآجل فقط" : "كل العمليات الجديدة"})</b> — ${esc(bl.reason)} · قرار ${esc(userName(bl.by))} في ${fmtDate(bl.at)}. تسوية المستحقات ورد المعدات تبقى ممكنة.</div></div>` : ""}
+  return `${pageHead(`<button class="star ${isFav(c.id) ? "on" : ""}" data-act="fav" data-c="${c.id}" title="${isFav(c.id) ? "إزالة من المفضلة" : "إضافة إلى المفضلة"}" aria-pressed="${isFav(c.id)}">${ic("star")}</button>${esc(c.name)}`, `${c.code}${c.fileNo ? " · ملف " + c.fileNo : ""} · ${c.type === "COMPANY" ? "منشأة" : "فرد"} · ${esc(c.city)}`, `${can(u, "sales.create") ? `<a class="btn primary" href="#/sales/new?customer=${c.id}${qs}">${ic("cart")}بيع</a>` : ""}${can(u, "rentals.create") ? `<a class="btn primary" href="#/rentals/new?customer=${c.id}${qs}">${ic("key")}إيجار</a>` : ""}${can(u, "payments.create") && all.balance > 0 ? `<button class="btn" data-act="payCustomer" data-c="${c.id}" data-p="${pid || ""}">${ic("cash")}تحصيل</button>` : ""}${can(u, "promissory") ? `<button class="btn" data-act="addPN" data-c="${c.id}" data-p="${pid || ""}">${ic("doc")}سند لأمر</button>` : ""}<a class="btn" href="#/print/rentbill/${c.id}${pid ? "?project=" + pid : ""}">${ic("file")}فاتورة إيجارات الفترة</a><a class="btn" href="#/print/acct/${c.id}${pid ? "?project=" + pid : ""}">${ic("receipt")}كشف حساب</a><a class="btn" href="#/print/statement/${c.id}${pid ? "?project=" + pid : ""}">${ic("print")}كرت العميل</a>${all.balance > 0 && can(u, "payments.create") ? waButton(c.mobile, msgStatement(c, all.balance), "واتساب الرصيد") : ""}<button class="btn" data-act="pinNote" data-kind="customer" data-id="${c.id}">${ic("pin")}ملاحظة مثبتة</button>`, `<a href="#/customers">العملاء</a> / ${esc(c.name)}`)}
+  ${c.pinnedNote ? `<div class="alert warn pinned" style="margin-bottom:14px">${ic("pin")}<div class="grow"><b>${esc(c.pinnedNote.text)}</b><div class="xs">ملاحظة مثبتة — ${esc(userName(c.pinnedNote.by))} · ${fmtDate(c.pinnedNote.at)}</div></div><button class="btn sm ghost" data-act="pinNote" data-kind="customer" data-id="${c.id}">تعديل</button></div>` : ""}${proj && proj.pinnedNote ? `<div class="alert info pinned" style="margin-bottom:14px">${ic("pin")}<div class="grow"><b>مشروع ${esc(proj.name)}: ${esc(proj.pinnedNote.text)}</b><div class="xs">${esc(userName(proj.pinnedNote.by))} · ${fmtDate(proj.pinnedNote.at)}</div></div><button class="btn sm ghost" data-act="pinNote" data-kind="project" data-id="${proj.id}">تعديل</button></div>` : ""}${bl ? `<div class="alert danger" style="margin-bottom:14px">${ic("ban")}<div><b>في القائمة السوداء (${bl.scope === "CREDIT" ? "الآجل فقط" : "كل العمليات الجديدة"})</b> — ${esc(bl.reason)} · قرار ${esc(userName(bl.by))} في ${fmtDate(bl.at)}. تسوية المستحقات ورد المعدات تبقى ممكنة.</div></div>` : ""}
   <div class="grid cust-top">
     <div class="card card-b col" style="gap:8px">
       <div class="row"><div class="avatar" style="width:44px;height:44px;font-size:20px">${esc(c.name[0])}</div><div class="col" style="gap:0"><b>${esc(c.name)}</b>${c.tradeName ? `<span class="small muted">العلامة التجارية: ${esc(c.tradeName)}</span>` : ""}</div></div>
-      <div class="row between small"><span class="muted">الجوال</span><b class="num">${c.mobile}</b></div>
+      <div class="row between small"><span class="muted">الجوال</span><span class="row" style="gap:4px"><b class="num">${c.mobile}</b><button class="btn sm ghost icon-only" data-act="copy" data-v="${c.mobile}" title="نسخ">${ic("copy")}</button></span></div>
       ${idRow("الهوية الوطنية", c.nationalId)}${idRow("الإقامة", c.iqama)}${idRow("السجل التجاري", c.cr)}${idRow("الرقم الضريبي", c.vat)}
       <div style="border-top:1px dashed var(--border);padding-top:8px;margin-top:2px"><div class="row between small"><b>الكفيل الغارم</b>${can(u, "customers.create") || canAny(u, "customers.viewAll") ? `<button class="btn sm ghost" data-act="editGuarantor" data-c="${c.id}">${ic(c.guarantor ? "edit" : "plus")}${c.guarantor ? "تعديل" : "إضافة"}</button>` : ""}</div>${c.guarantor ? `<div class="row between small"><span class="muted">الاسم</span><b>${esc(c.guarantor)}</b></div>${c.guarantorId ? `<div class="row between small"><span class="muted">الهوية / الإقامة</span><b class="num">${c.guarantorId}</b></div>` : ""}${c.guarantorMobile ? `<div class="row between small"><span class="muted">الجوال</span><b class="num">${c.guarantorMobile}</b></div>` : ""}` : '<div class="xs faint">لا يوجد كفيل — اختياري</div>'}</div>
       <div class="row between small"><span class="muted">المندوب</span><b>${esc(byId(S.reps, c.repId)?.name || "—")}</b></div>

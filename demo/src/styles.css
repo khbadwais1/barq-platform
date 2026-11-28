@@ -428,3 +428,70 @@ td.num,th.num{display:table-cell}
   @page{size:A4;margin:10mm}
 }
 .pdf-mode .tbl-wrap{max-height:none!important;overflow:visible!important}
+
+/* ═══ CR-004: الأدوات ═══ */
+.tools-panel{position:fixed;top:0;left:0;bottom:0;width:380px;max-width:100vw;background:var(--surface);border-right:1px solid var(--border);box-shadow:var(--shadow-lg);z-index:60;display:flex;flex-direction:column;animation:toolsIn var(--dur) var(--ease)}
+@keyframes toolsIn{from{transform:translateX(-24px);opacity:0}to{transform:none;opacity:1}}
+.tools-h{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--border)}
+.tools-h b{display:flex;align-items:center;gap:8px}
+.tools-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:8px;border-bottom:1px solid var(--border)}
+.tools-tabs button{display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 4px;border:1px solid transparent;border-radius:9px;background:none;cursor:pointer;font-size:11px;color:var(--text-2)}
+.tools-tabs button.on{background:var(--brand-soft);color:var(--brand);border-color:#c7d2fe;font-weight:600}
+.tools-b{padding:14px;overflow:auto;flex:1}
+.calc-in{height:48px;font-size:20px;text-align:left}
+.calc-out{font-size:26px;font-weight:700;text-align:left;margin:8px 2px;min-height:34px;color:var(--brand)}
+.calc-keys{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.calc-keys .btn{height:44px;font-size:17px}
+.quote{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-top:10px;display:flex;flex-direction:column;gap:4px}
+.quote .big{font-size:16px;border-top:1px solid var(--border);padding-top:6px;margin-top:2px}
+.notes-ta{min-height:320px;line-height:1.8}
+.todo{display:flex;gap:8px;align-items:flex-start;padding:8px 0;border-bottom:1px dashed var(--border)}
+.todo input{margin-top:4px}
+.todo.done .small{text-decoration:line-through;color:var(--text-3)}
+.todo .late{color:var(--red);font-weight:600}.todo .today{color:var(--amber);font-weight:600}
+.btn.wa{background:#e8f8ee;border-color:#b7e4c7;color:#166534}
+.btn.wa:hover{background:#d5f2df}
+.btn.icon-only{width:26px;height:26px;padding:0}
+.btn.icon-only svg{width:14px;height:14px}
+.star{border:0;background:none;cursor:pointer;color:var(--text-3);padding:0 2px;vertical-align:middle;display:inline-grid;place-items:center}
+.star svg{width:22px;height:22px}
+.star.sm svg{width:17px;height:17px}
+.star.on{color:#f59e0b}
+.star.on svg{fill:#f59e0b}
+.page-head h1 .star{margin-inline-end:6px}
+.hclock{display:flex;flex-direction:column;align-items:flex-end;line-height:1.25;padding:0 6px}
+.hclock b{font-size:14px}
+.hclock span{font-size:11px;color:var(--text-3)}
+.proj-note{margin-top:6px;background:var(--amber-soft);color:#92400e;border-radius:7px;padding:4px 7px}
+.proj-note svg{width:11px;height:11px;vertical-align:-1px}
+.alert.pinned{align-items:center}
+kbd{display:inline-block;min-width:28px;text-align:center;border:1px solid var(--border-strong);border-bottom-width:2px;border-radius:6px;padding:1px 7px;font-family:ui-monospace,Consolas,monospace;font-size:12px;background:var(--surface-2)}
+@media (max-width:980px){.hclock{display:none}}
+@media (max-width:460px){.tools-panel{width:100vw}}
+
+/* ═══ الوضع الليلي (تفضيل الجهاز) — المطبوعات تبقى فاتحة ═══ */
+:root[data-theme="dark"]{
+  --bg:#0b1020;--surface:#121a2e;--surface-2:#18223a;--border:#26324d;--border-strong:#34415f;
+  --text:#e6eaf3;--text-2:#a9b4cc;--text-3:#7180a0;
+  --brand:#8aa4ff;--brand-2:#9fb4ff;--brand-soft:#1c2850;
+  --green:#4ade80;--green-soft:#0f2a1c;--amber:#fbbf24;--amber-soft:#2b2210;--red:#f87171;--red-soft:#2e1416;--blue:#93b4ff;--blue-soft:#15213f;--gray-soft:#1b2440;
+  --shadow:0 1px 2px rgba(0,0,0,.3);--shadow-lg:0 12px 40px rgba(0,0,0,.5);
+  color-scheme:dark;
+}
+:root[data-theme="dark"] body{background:var(--bg)}
+:root[data-theme="dark"] .header{background:rgba(18,26,46,.92)}
+:root[data-theme="dark"] .card,:root[data-theme="dark"] .modal,:root[data-theme="dark"] .modal-h,:root[data-theme="dark"] .dropdown,:root[data-theme="dark"] .search-results,:root[data-theme="dark"] .cols-menu,:root[data-theme="dark"] .fam,:root[data-theme="dark"] .size,:root[data-theme="dark"] .icon-btn,:root[data-theme="dark"] .user-chip,:root[data-theme="dark"] .btn,:root[data-theme="dark"] .input,:root[data-theme="dark"] .select,:root[data-theme="dark"] .cats button,:root[data-theme="dark"] .date-range,:root[data-theme="dark"] .mobile-bar,:root[data-theme="dark"] .login-form{background:var(--surface);color:var(--text);border-color:var(--border)}
+:root[data-theme="dark"] .btn.primary,:root[data-theme="dark"] .icon-btn.primary,:root[data-theme="dark"] .cats button.on{background:#3b5bdb;border-color:#3b5bdb;color:#fff}
+:root[data-theme="dark"] .btn.success{background:#15803d;border-color:#15803d;color:#fff}
+:root[data-theme="dark"] .btn.wa{background:#0f2a1c;border-color:#1f5134;color:#86efac}
+:root[data-theme="dark"] .seg button.on{background:var(--surface-2);color:var(--text)}
+:root[data-theme="dark"] .tbl th,:root[data-theme="dark"] .tbl tfoot td,:root[data-theme="dark"] .modal-f,:root[data-theme="dark"] .fam-h,:root[data-theme="dark"] .matrix th{background:var(--surface-2)}
+:root[data-theme="dark"] .tbl td{border-bottom-color:#1d2741}
+:root[data-theme="dark"] .tbl tbody tr:hover{background:#17213b}
+:root[data-theme="dark"] .demo-banner{background:#2b2210;color:#fcd34d;border-color:#4a3a14}
+:root[data-theme="dark"] .alert.warn{color:#fcd34d}:root[data-theme="dark"] .alert.danger{color:#fca5a5}:root[data-theme="dark"] .alert.info{color:#bfdbfe}:root[data-theme="dark"] .alert.ok{color:#86efac}
+:root[data-theme="dark"] .proj-note{color:#fcd34d}
+:root[data-theme="dark"] .login-form h1,:root[data-theme="dark"] .page-head h1{color:var(--text)}
+:root[data-theme="dark"] .print-wrap{background:#0b1020}
+:root[data-theme="dark"] .print-sheet{color:#1e3a8a;background:#fff}
+:root[data-theme="dark"] .chart .gl{stroke:#26324d}

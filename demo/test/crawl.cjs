@@ -15,7 +15,7 @@ const ctx = {
 };
 ctx.window.qrSvg = ctx.qrSvg = () => "<svg/>";
 vm.createContext(ctx);
-vm.runInContext(app + "\n;globalThis.__=({seedState,ROUTES,ACTIONS,UI,get S(){return S},setMe:(u)=>{ME=u},layout,navItems,canAny,DomainError});", ctx);
+vm.runInContext(app + "\n;globalThis.__=({seedState,ROUTES,ACTIONS,UI,get S(){return S},setMe:(u)=>{ME=u},layout,navItems,canAny,DomainError,toolBody,TOOL_TABS,ensureToolsState});", ctx);
 const A = ctx.__;
 A.seedState();
 const S = A.S;
@@ -74,6 +74,21 @@ for (const u of S.users) {
         for (const m of r2.html.matchAll(/data-go="([^"]*)"/g)) queue.push(m[1]);
         for (const m of r2.html.matchAll(/data-act(?:-input|-change)?="([^"]+)"/g)) actsSeen.add(m[1]);
       }
+    }
+  }
+}
+// تبويبات الأدوات لكل دور
+for (const u of S.users) {
+  A.setMe(u);
+  A.ensureToolsState();
+  for (const [tab] of A.TOOL_TABS) {
+    try {
+      const h = A.toolBody(tab);
+      pages++;
+      if (/undefined|NaN/.test(h)) problems.push(`[${u.username}] tools:${tab} → undefined/NaN`);
+      for (const m of h.matchAll(/data-act(?:-input|-change)?="([^"]+)"/g)) actsSeen.add(m[1]);
+    } catch (e) {
+      problems.push(`[${u.username}] tools:${tab} → ${e.message}`);
     }
   }
 }

@@ -55,6 +55,13 @@ const ICONS = {
   doc: '<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/>',
   repeat: '<path d="m17 2 4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>',
   cashOut: '<rect x="2" y="6" width="20" height="12" rx="2"/><path d="M12 9v6M9.5 11.5 12 9l2.5 2.5"/><path d="M6 12h.01M18 12h.01"/>',
+  tools: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.4 2.4-2.6-.6-.6-2.6z"/>',
+  calc: '<rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01M8 19h.01M12 19h4"/>',
+  copy: '<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
+  whatsapp: '<path d="M3 21l1.65-4.4A8.5 8.5 0 1 1 8 19.6z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 .8a4 4 0 0 1-1.8-1.8l.8-1-1-2z"/>',
+  moon: '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>',
+  keyboard: '<rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/>',
+  pin: '<path d="M12 17v5M5 17h14l-1.5-3.5V5h1V3H5.5v2h1v8.5z"/>',
   hash: '<path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/>',
 };
 const ic = (n, cls = "") => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICONS[n] || ""}</svg>`;
@@ -284,6 +291,8 @@ function table(id, columns, rows, opts = {}) {
       });
     }
   }
+  // صفوف مثبتة في الأعلى (مثل العملاء المفضلين) مهما كان الفرز
+  if (opts.pinFirst) data = [...data.filter(opts.pinFirst), ...data.filter((r) => !opts.pinFirst(r))];
   const pages = Math.max(1, Math.ceil(data.length / st.size));
   if (st.page >= pages) st.page = pages - 1;
   const slice = data.slice(st.page * st.size, st.page * st.size + st.size);

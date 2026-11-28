@@ -219,6 +219,7 @@ function go(path) {
 /* ─── العرض ─── */
 const $ = (sel, root = document) => root.querySelector(sel);
 function render() {
+  ensureToolsState();
   const { path, query } = parseHash();
   ME = currentUser();
   const root = $("#root");
@@ -342,14 +343,17 @@ function layout(content, path, enter) {
         <button class="icon-btn menu-btn" data-act="mnav">${ic("menu")}</button>
         <div class="search"><input id="gsearch" placeholder="ابحث: عميل، جوال، هوية، سجل، فاتورة، بيع، إيجار، مشروع، صنف…" value="${esc(UI.search)}" data-act-input="gsearch" autocomplete="off">${ic("search")}${UI.search.trim().length >= 2 ? globalResults(UI.search) : ""}</div>
         <span class="grow"></span>
+        ${headerClock()}
+        <button class="icon-btn" data-act="toggleTools" title="الأدوات (T)" aria-pressed="${UI.toolsOpen ? "true" : "false"}">${ic("tools")}</button>
         ${qa.length ? `<div style="position:relative"><button class="icon-btn primary" data-act="menu" data-m="qa" title="إجراء سريع">${ic("plus")}</button>${UI.menu === "qa" ? `<div class="dropdown">${qa.map(([h, i, l]) => `<button data-act="quick" data-h="${h}">${ic(i)}${l}</button>`).join("")}</div>` : ""}</div>` : ""}
         <div style="position:relative"><button class="icon-btn" data-act="menu" data-m="notif" title="التنبيهات">${ic("bell")}${unread ? `<span class="dot">${unread > 99 ? "99+" : unread}</span>` : ""}</button>
           ${UI.menu === "notif" ? `<div class="dropdown" style="width:360px;max-height:460px;overflow:auto"><div class="row between" style="padding:6px 8px"><b>التنبيهات</b><button class="btn sm ghost" style="width:auto" data-act="readAll">تعليم الكل كمقروء</button></div>${notifs.length ? notifs.slice(0, 40).map((n) => `<a href="${n.link}" data-act="readNotif" data-k="${n.key}" style="align-items:flex-start;${S.readNotifs[u.id + n.key] ? "opacity:.55" : ""}"><span class="badge b-${n.type === "red" ? "red" : n.type === "amber" ? "amber" : n.type === "green" ? "green" : "blue"}" style="padding:2px 6px"></span><span class="col" style="gap:0"><b class="small">${esc(n.title)}</b><span class="xs muted">${esc(n.body)}</span></span></a>`).join("") : emptyBox("لا توجد تنبيهات", "bell")}</div>` : ""}</div>
         <div style="position:relative"><div class="user-chip" data-act="menu" data-m="user"><div class="txt col" style="gap:0;text-align:left"><b class="small">${esc(u.name)}</b><span class="xs muted">${ROLE_LABEL[u.role]}</span></div><div class="avatar">${esc(u.name[0])}</div></div>
-          ${UI.menu === "user" ? `<div class="dropdown"><div style="padding:8px 10px" class="small muted">آخر دخول: <span class="num">${fmtDT(S.logins.filter((l) => l.username === u.username && l.ok).slice(-2)[0]?.at)}</span></div><a href="#/profile">${ic("user")}الملف الشخصي وكلمة المرور</a><button data-act="switchUser">${ic("repeat")}تبديل المستخدم (للعرض)</button><button data-act="logout" style="color:var(--red)">${ic("logout")}تسجيل الخروج</button></div>` : ""}</div>
+          ${UI.menu === "user" ? `<div class="dropdown"><div style="padding:8px 10px" class="small muted">آخر دخول: <span class="num">${fmtDT(S.logins.filter((l) => l.username === u.username && l.ok).slice(-2)[0]?.at)}</span></div><button data-act="toggleTheme">${ic("moon")}${document.documentElement.dataset.theme === "dark" ? "الوضع النهاري" : "الوضع الليلي"}</button><button data-act="shortcuts">${ic("keyboard")}اختصارات لوحة المفاتيح</button><a href="#/profile">${ic("user")}الملف الشخصي وكلمة المرور</a><button data-act="switchUser">${ic("repeat")}تبديل المستخدم (للعرض)</button><button data-act="logout" style="color:var(--red)">${ic("logout")}تسجيل الخروج</button></div>` : ""}</div>
       </header>
       <main class="content${enter ? " enter" : ""}" id="content" tabindex="-1">${content}</main>
     </div>
+    ${toolsPanel()}
   </div>`;
 }
 

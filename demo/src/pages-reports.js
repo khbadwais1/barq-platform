@@ -130,7 +130,7 @@ route("/print/acct/:id", [], ({ id }, query) => {
     <tfoot><tr><th colspan="3" style="text-align:right">الإجمالي ( ${tafqeet(Math.max(0, bal)).replace("فقط ", "")} )</th><th class="num">${nf2.format(dSum / 100)}</th><th class="num">${nf2.format(cSum / 100)}</th><th class="num">${nf2.format(bal / 100)}</th></tr></tfoot></table>
     <div class="small" style="margin-top:12px;color:#0f172a"><b>ملحوظة:</b> كشف الحساب المقدم مطابق ماليًا وكميًا في حالة عدم الاعتراض عليه خلال ثلاثة أيام من توقيعكم بالاستلام.</div>
     <div class="ps-sign"><div>المستلم</div><div>${COMPANY.name}</div></div>${tplStamp(Date.now())}${sheetFoot()}</div>`;
-  return `<div class="content" style="max-width:1150px">${pageHead("كشف حساب العميل", `${esc(c.name)} — بنفس شكل كشف «ك» المعتمد في المؤسسة`, `${periodPicker("/print/acct", id, pid, from, to)}${pdfBtn()}<button class="btn primary" onclick="window.print()">${ic("print")}طباعة</button><a class="btn" href="#/customers/${id}${pid ? "?project=" + pid : ""}">رجوع</a>`)}<div class="print-wrap">${sheet}</div></div>`;
+  return `<div class="content" style="max-width:1150px">${pageHead("كشف حساب العميل", `${esc(c.name)} — بنفس شكل كشف «ك» المعتمد في المؤسسة`, `${periodPicker("/print/acct", id, pid, from, to)}${bal > 0 ? waButton(c.mobile, msgStatement(c, bal), "واتساب الرصيد") : ""}${pdfBtn()}<button class="btn primary" onclick="window.print()">${ic("print")}طباعة</button><a class="btn" href="#/customers/${id}${pid ? "?project=" + pid : ""}">رجوع</a>`)}<div class="print-wrap">${sheet}</div></div>`;
 });
 
 /* ─── الحركة الشهرية للصندوق — فرع المدينة ─── */

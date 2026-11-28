@@ -1028,6 +1028,7 @@ function notificationsFor(user) {
       }
     if (user.role === "OWNER") for (const a of S.approvals.filter((a) => a.status === "PENDING")) out.push({ key: "ap-" + a.id, type: "blue", title: "طلب موافقة", body: a.summary, link: "#/approvals", at: a.at });
     if (user.role === "SELLER") for (const a of S.approvals.filter((a) => a.requestedBy === user.id && a.status !== "PENDING" && now - a.decidedAt < 7 * DAY)) out.push({ key: "apd-" + a.id, type: a.status === "APPROVED" ? "green" : "red", title: a.status === "APPROVED" ? "تم اعتماد طلبك" : "تم رفض طلبك", body: a.summary, link: "#/sales", at: a.decidedAt });
+    for (const r of (S.reminders || []).filter((r) => r.userId === user.id && !r.done && r.due && dayNo(r.due) <= dayNo(now))) out.push({ key: "rm-" + r.id, type: dayNo(r.due) < dayNo(now) ? "red" : "blue", title: "تذكير", body: r.text, link: r.customerId ? "#/customers/" + r.customerId : "#" + ROLE_HOME[user.role], at: r.due });
     for (const f of S.followups.filter((f) => f.userId === user.id && f.next && dayNo(f.next) <= dayNo(now) && !f.done)) out.push({ key: "fu-" + f.id, type: "blue", title: "متابعة مستحقة", body: `${byId(S.customers, f.customerId).name} — ${f.outcome}`, link: "#/customers/" + f.customerId, at: f.next });
     return out.sort((a, b) => b.at - a.at);
   });
